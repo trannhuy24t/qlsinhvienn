@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý lớp học</title>
+    <link rel="stylesheet" href="../css/lopHoc.css">
+</head>
+<body>
+    <header class="main-header">
+    <div class="container">
+        <h1>Hệ Thống Quản Lý Sinh Viên</h1>
+        <nav class="navbar">
+            <ul>
+                <li><a href="home.html">Trang chủ</a></li>
+                <li><a href="sinhVien.html" class="active">Sinh viên</a></li>
+                <li><a href="lopHoc.html">Lớp học</a></li>
+                <li><a href="monHoc.html">Môn học</a></li>
+                <li><a href="giangVien.html">Giảng viên</a></li>
+                <li><a href="diem.html">Bảng điểm</a></li>
+                <li><a href="baoCao.html">Báo cáo</a></li>
+                <li><a href="thongKe.html">Thống kê</a></li>
+                <li><a href="logout.php">Đăng xuất</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<h2>Quản lý lớp học</h2>
+
+<div class="form">
+    <form onsubmit="addLop(); return false;">
+        <input id="malop" placeholder="Mã lớp">
+        <input id="tenlop" placeholder="Tên lớp">
+        <input id="khoa" placeholder="Khóa">
+
+        <button type="submit">Thêm</button>
+    </form>
+</div>
+
+<hr>
+
+<table>
+    <thead>
+        <tr>
+            <th>Mã lớp</th>
+            <th>Tên lớp</th>
+            <th>Khóa</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="table"></tbody>
+</table>
+
+<hr>
+
+<h3>Sinh viên trong lớp</h3>
+<select id="chonlop" onchange="loadSV()"></select>
+
+<table>
+    <thead>
+        <tr>
+            <th>Mã SV</th>
+            <th>Họ tên</th>
+        </tr>
+    </thead>
+    <tbody id="svTable"></tbody>
+</table>
+
+<script src="../js/lopHoc.js"></script>
+
+</body>
+</html>

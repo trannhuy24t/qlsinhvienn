@@ -1,0 +1,85 @@
+body {
+    font-family: Arial;
+    padding: 20px;
+}
+
+h1 {
+    color: #fbfafa;
+}
+h3 {
+    color: #1111bb;
+    text-align: center;
+}
+.form input {
+    margin: 5px;
+    padding: 8px;
+}
+
+button {
+    padding: 6px 12px;
+    background: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+h2
+{
+    text-align: center;
+    color: #080808;
+}
+
+.main-header {
+    background-color: #007bff; /* Màu xanh chuẩn trong ảnh của bạn */
+    width: 100%;               /* Trải dài hết màn hình */
+    padding: 30px 0;           /* Tạo độ cao cho header */
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-content h1 {
+    margin: 0;
+    text-align: center;
+    font-size: 32px;
+    padding-bottom: 20px;
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Căn giữa các mục menu */
+    gap: 25px;               /* Khoảng cách giữa các chữ */
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.navbar ul li a:hover, 
+.navbar ul li a.active {
+    text-decoration: underline; /* Hoặc đổi màu khi di chuột vào */
+}
+h1 {
+    text-align: center;
+}

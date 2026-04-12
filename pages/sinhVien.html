@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sinh viên</title>
+    <link rel="stylesheet" href="../css/sinhVien.css">
+</head>
+<body>
+<header class="main-header">
+    <div class="container">
+        <h1>Hệ Thống Quản Lý Sinh Viên</h1>
+        <nav class="navbar">
+            <ul>
+                <li><a href="home.html">Trang chủ</a></li>
+                <li><a href="sinhVien.html" class="active">Sinh viên</a></li>
+                <li><a href="lopHoc.html">Lớp học</a></li>
+                <li><a href="monHoc.html">Môn học</a></li>
+                <li><a href="giangVien.html">Giảng viên</a></li>
+                <li><a href="diem.html">Bảng điểm</a></li>
+                <li><a href="baoCao.html">Báo cáo</a></li>
+                <li><a href="thongKe.html">Thống kê</a></li>
+                <li><a href="logout.php">Đăng xuất</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+    <h1>Quản lý sinh viên</h1>
+
+<div class="form">
+    <form id="formsinhvien" onsubmit="add(); return false;">
+
+        <input id="masv" name="masv" placeholder="Mã SV">
+        <input id="hoten" name="hoten" placeholder="Họ tên">
+        <input type="date" id="ngaysinh" name="ngaysinh">
+
+        <select id="gioitinh" name="gioitinh">
+            <option value="">Giới tính</option>
+            <option>Nam</option>
+            <option>Nữ</option>
+        </select>
+
+        <input id="email" name="email" placeholder="Email">
+        <input id="sodienthoai" name="sodienthoai" placeholder="SĐT">
+        <input id="diachi" name="diachi" placeholder="Địa chỉ">
+        <input id="malop" name="malop" placeholder="Mã lớp">
+
+        <input type="file" id="anh" name="anh">
+
+        <button type="submit">Thêm</button>
+
+    </form>
+</div>
+
+<hr>
+
+<h3>Tìm kiếm</h3>
+
+<input id="s_masv" placeholder="Mã SV">
+<input id="s_hoten" placeholder="Họ tên">
+<input id="s_malop" placeholder="Lớp">
+
+<select id="s_gioitinh">
+    <option value="">Giới tính</option>
+    <option>Nam</option>
+    <option>Nữ</option>
+</select>
+
+<input type="date" id="from">
+<input type="date" id="to">
+
+<button onclick="search()">Tìm</button>
+
+<hr>
+
+<table>
+    <thead>
+        <tr>
+            <th>Mã SV</th>
+            <th>Họ tên</th>
+            <th>Lớp</th>
+            <th>Ảnh</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="table"></tbody>
+</table>
+
+<script src="../js/sinhVien.js"></script>
+
+</body>
+</html>

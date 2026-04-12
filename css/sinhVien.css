@@ -1,0 +1,94 @@
+body {
+    font-family: Arial;
+    background: #f5f6fa;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.form {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+input, select {
+    margin: 5px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 8px 15px;
+    background: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #27ae60;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+img {
+    border-radius: 5px;
+}
+/* Reset lề mặc định của trình duyệt */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.main-header {
+    background-color: #007bff; /* Màu xanh chuẩn trong ảnh của bạn */
+    width: 100%;               /* Trải dài hết màn hình */
+    padding: 30px 0;           /* Tạo độ cao cho header */
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-content h1 {
+    margin: 0;
+    text-align: center;
+    font-size: 32px;
+    padding-bottom: 20px;
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Căn giữa các mục menu */
+    gap: 25px;               /* Khoảng cách giữa các chữ */
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.navbar ul li a:hover, 
+.navbar ul li a.active {
+    text-decoration: underline; /* Hoặc đổi màu khi di chuột vào */
+}

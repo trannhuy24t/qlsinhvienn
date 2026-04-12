@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý điểm</title>
+    <link rel="stylesheet" href="../css/diem.css">
+</head>
+<body>
+    <header class="main-header">
+        <h1>Hệ Thống Quản Lý Sinh Viên</h1>
+        <nav class="navbar">
+            <ul>
+                <li><a href="home.html">Trang chủ</a></li>
+                <li><a href="sinhVien.html">Sinh viên</a></li>
+                <li><a href="lopHoc.html">Lớp học</a></li>
+                <li><a href="monHoc.html">Môn học</a></li>
+                <li><a href="giangVien.html">Giảng viên</a></li>
+                <li><a href="diem.html" class="active">Bảng điểm</a></li>
+                <li><a href="baoCao.html">Báo cáo</a></li>
+                <li><a href="thongKe.html">Thống kê</a></li>
+                <li><a href="dangnhap.html">Đăng xuất</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="page-title">📊 Quản lý điểm</h1>
+
+        <section class="card">
+            <h3>Nhập điểm sinh viên</h3>
+            <form onsubmit="save(); return false;" class="grid-form">
+                <div class="input-group">
+                    <label>Sinh viên</label>
+                    <select id="sv"></select>
+                </div>
+                <div class="input-group">
+                    <label>Lớp học phần</label>
+                    <select id="lhp"></select>
+                </div>
+                <div class="input-group">
+                    <label>Chuyên cần</label>
+                    <input id="cc" type="number" step="0.1" placeholder="0.0">
+                </div>
+                <div class="input-group">
+                    <label>Giữa kỳ</label>
+                    <input id="gk" type="number" step="0.1" placeholder="0.0">
+                </div>
+                <div class="input-group">
+                    <label>Cuối kỳ</label>
+                    <input id="ck" type="number" step="0.1" placeholder="0.0">
+                </div>
+                <button class="btn-save">Lưu điểm</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h3>Danh sách điểm</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SV</th><th>Môn</th><th>CC</th><th>GK</th><th>CK</th><th>Tổng</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3>🎓 Tổng kết bảng điểm</h3>
+            <div class="action-bar">
+                <select id="svTong"></select>
+                <button onclick="loadBangDiem()" class="btn-primary">Xem bảng điểm</button>
+                <button onclick="xuatPDF()" class="btn-pdf">📄 Xuất PDF</button>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Môn</th>
+                            <th>Tín chỉ</th>
+                            <th>Điểm</th>
+                            <th>Xếp loại</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bangdiem"></tbody>
+                </table>
+            </div>
+            <div class="result-summary">
+                <h3 id="tongket"></h3>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/diem.js"></script>
+</body>
+</html>

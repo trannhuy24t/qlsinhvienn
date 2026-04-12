@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - QLSinhVien</title>
+    <link rel="stylesheet" href="../css/home.css">
+</head>
+<body>
+<header class="main-header">
+    <div class="container">
+        <h1>Hệ Thống Quản Lý Sinh Viên</h1>
+        <nav class="navbar">
+            <ul>
+                <li><a href="home.html">Trang chủ</a></li>
+                <li><a href="sinhVien.html" class="active">Sinh viên</a></li>
+                <li><a href="lopHoc.html">Lớp học</a></li>
+                <li><a href="monHoc.html">Môn học</a></li>
+                <li><a href="giangVien.html">Giảng viên</a></li>
+                <li><a href="diem.html">Bảng điểm</a></li>
+                <li><a href="baoCao.html">Báo cáo</a></li>
+                <li><a href="thongKe.html">Thống kê</a></li>
+                <li><a href="logout.php">Đăng xuất</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+    <main>
+        <h2>Xin chào, <span id="username">...</span></h2>
+
+        <div class="card-container">
+    <div class="card">
+        <h3>Sinh viên</h3>
+        <div class="count" id="count-sv">0</div>
+    </div>
+    <div class="card">
+        <h3>Lớp học</h3>
+        <div class="count" id="count-lh">0</div>
+    </div>
+    <div class="card">
+        <h3>Giảng viên</h3>
+        <div class="count" id="count-gv">0</div>
+    </div>
+    <div class="card">
+        <h3>Môn học</h3>
+        <div class="count" id="count-mh">0</div>
+    </div>
+</div>
+    </main>
+
+    <script src="../js/home.js"></script>
+</body>
+</html>

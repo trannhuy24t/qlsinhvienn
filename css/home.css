@@ -1,0 +1,90 @@
+/* Reset lề mặc định của trình duyệt */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.main-header {
+    background-color: #007bff; /* Màu xanh chuẩn trong ảnh của bạn */
+    width: 100%;               /* Trải dài hết màn hình */
+    padding: 30px 0;           /* Tạo độ cao cho header */
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+h1 {
+    text-align: center;
+}
+.header-content h1 {
+    margin: 0 ;
+    justify-content: center;
+    text-align: center;
+    font-size: 32px;
+    padding-bottom: 20px;
+}
+
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Căn giữa các mục menu */
+    gap: 25px;               /* Khoảng cách giữa các chữ */
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.navbar ul li a:hover, 
+.navbar ul li a.active {
+    text-decoration: underline; /* Hoặc đổi màu khi di chuột vào */
+}
+
+main {
+    padding: 20px;
+}
+
+/* Container giới hạn độ rộng để ép xuống 2 hàng */
+.card-container {
+    display: flex;
+    justify-content: center; 
+    gap: 20px;
+    flex-wrap: wrap;        /* Cho phép các khối tự xuống hàng */
+    margin: 30px auto;
+    max-width: 500px;       /* QUAN TRỌNG: Độ rộng này đủ cho 2 khối + gap */
+}
+
+/* Định dạng từng khối */
+.card {
+    background: white;
+    padding: 20px;
+    
+    /* Tính toán chiều rộng để chia 2 cột (trừ đi khoảng cách gap) */
+    width: calc(50% - 10px); 
+    aspect-ratio: 1 / 1;    /* Giữ hình vuông */
+    
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước khối */
+}
+
+.card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.card .count {
+    font-size: 28px;
+    font-weight: bold;
+    color: #007bff;
+}
