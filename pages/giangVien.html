@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Quản lý giảng viên</title>
-<link rel="stylesheet" href="../css/giangVien.css">
+    <meta charset="UTF-8">
+    <title>Quản lý giảng viên</title>
+    <link rel="stylesheet" href="../css/giangVien.css">
 </head>
 
 <body>
@@ -12,63 +12,79 @@
         <h1>Hệ Thống Quản Lý Sinh Viên</h1>
         <nav class="navbar">
             <ul>
-                <li><a href="home.html">Trang chủ</a></li>
-                <li><a href="sinhVien.html" class="active">Sinh viên</a></li>
-                <li><a href="lopHoc.html">Lớp học</a></li>
-                <li><a href="monHoc.html">Môn học</a></li>
-                <li><a href="giangVien.html">Giảng viên</a></li>
-                <li><a href="diem.html">Bảng điểm</a></li>
-                <li><a href="baoCao.html">Báo cáo</a></li>
-                <li><a href="thongKe.html">Thống kê</a></li>
-                <li><a href="logout.php">Đăng xuất</a></li>
+                <li><a href="../php/home.php">Trang chủ</a></li>
+                <li><a href="../pages/sinhVien.html">Sinh viên</a></li>
+                <li><a href="../pages/lopHoc.html">Lớp học</a></li>
+                <li><a href="../pages/monHoc.html">Môn học</a></li>
+                <li><a href="../pages/giangVien.html" class="active">Giảng viên</a></li>
+                <li><a href="../pages/diem.html">Bảng điểm</a></li>
+                <li><a href="../pages/baoCao.html">Báo cáo</a></li>
+                <li><a href="../pages/thongKe.html">Thống kê</a></li>
+                <li><a href="../pages/dangnhap.html">Đăng xuất</a></li>
             </ul>
         </nav>
     </div>
 </header>
+
 <h2>👨‍🏫 Quản lý Giảng viên</h2>
 
 <div class="grid">
+    <div class="card">
+        <h3>Thêm giảng viên</h3>
+        <form id="formGV" onsubmit="addGV(); return false;">
+            <input id="magv" placeholder="Mã GV" required>
+            <input id="hoten" placeholder="Họ tên" required>
+            <input id="email" placeholder="Email" required>
+            <input id="sdt" placeholder="SĐT" required>
+            <input id="chuyennganh" placeholder="Chuyên ngành" required>
+            <button type="submit" id="btnSubmit">Thêm</button>
+        </form>
+    </div>
 
-<div class="card">
-<h3>Thêm giảng viên</h3>
-<form id="formGV" onsubmit="addGV(); return false;">
-<input id="magv" placeholder="Mã GV">
-<input id="hoten" placeholder="Họ tên">
-<input id="email" placeholder="Email">
-<input id="sdt" placeholder="SĐT">
-<input id="chuyennganh" placeholder="Chuyên ngành">
-<button id="btnSubmit">Thêm</button>
-</form>
-</div>
-
-<div class="card">
-<h3>Phân công giảng dạy</h3>
-<form onsubmit="assign(); return false;">
-<select id="gvSelect"></select>
-<select id="monSelect"></select>
-<button>Phân công</button>
-</form>
-</div>
-
+    <div class="card">
+        <h3>Phân công giảng dạy</h3>
+        <form id="formAssign" onsubmit="assign(); return false;">
+            <select id="gvSelect" required>
+                <option value="">Chọn giảng viên</option>
+            </select>
+            <select id="monSelect" required>
+                <option value="">Chọn môn học</option>
+            </select>
+            <button type="submit" id="btnAssign">Phân công</button>
+        </form>
+    </div>
 </div>
 
 <hr>
 
 <table>
-<thead>
-<tr>
-<th>Mã</th><th>Tên</th><th>Email</th><th>SĐT</th><th>Chuyên ngành</th><th></th>
-</tr>
-</thead>
-<tbody id="gvTable"></tbody>
+    <thead>
+        <tr>
+            <th>Mã</th>
+            <th>Tên</th>
+            <th>Email</th>
+            <th>SĐT</th>
+            <th>Chuyên ngành</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="gvTable"></tbody>
 </table>
+
+<br>
+<hr>
 
 <h3>Danh sách phân công</h3>
 <table>
-<thead>
-<tr><th>Giảng viên</th><th>Chuyên ngành</th><th>Môn</th></tr>
-</thead>
-<tbody id="pcTable"></tbody>
+    <thead>
+        <tr>
+            <th>Giảng viên</th>
+            <th>Chuyên ngành</th>
+            <th>Môn</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="pcTable"></tbody>
 </table>
 
 <script src="../js/giangVien.js"></script>

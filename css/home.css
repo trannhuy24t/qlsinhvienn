@@ -88,3 +88,62 @@ main {
     font-weight: bold;
     color: #007bff;
 }
+.welcome-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Khoảng cách giữa icon và chữ */
+    margin-top: 30px;
+    font-size: 24px;
+    color: #333;
+}
+
+.welcome-text i {
+    font-size: 30px; /* Chỉnh icon to hơn một chút */
+    color: #007bff; /* Màu xanh đồng bộ với header */
+}
+/* Tùy chỉnh icon user trên thanh menu */
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;            /* Kích hoạt Flexbox */
+    justify-content: center;  /* Căn giữa toàn bộ menu */
+    gap: 30px;                /* Tạo khoảng cách đều giữa các nút (tăng số này nếu muốn giãn rộng hơn) */
+    align-items: center;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    padding: 10px 15px;       /* Tạo vùng bấm rộng hơn cho nút */
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent; /* Tạo nền cho hiệu ứng hover */
+}
+
+.navbar ul li a:hover {
+    border-bottom: 2px solid white; /* Hiệu ứng gạch chân khi di chuột giống ảnh mẫu */
+    opacity: 0.8;
+}
+
+.user-item {
+    margin-left: 15px;
+    background: rgba(255, 255, 255, 0.2); /* Tạo vòng tròn mờ bao quanh icon */
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Làm tròn */
+    transition: 0.3s;
+}
+
+.user-item:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.user-item i {
+    color: white;
+    font-size: 18px;
+}

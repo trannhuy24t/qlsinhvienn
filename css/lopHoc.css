@@ -1,85 +1,160 @@
-body {
-    font-family: Arial;
-    padding: 20px;
-}
-
-h1 {
-    color: #fbfafa;
-}
-h3 {
-    color: #1111bb;
-    text-align: center;
-}
-.form input {
-    margin: 5px;
-    padding: 8px;
-}
-
-button {
-    padding: 6px 12px;
-    background: blue;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-table {
-    width: 100%;
-    margin-top: 10px;
-    border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-}
+/* Tổng thể */
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
 }
-h2
-{
+ h1 {
     text-align: center;
-    color: #080808;
 }
 
+/* Header giống trang Home/Giảng viên */
 .main-header {
-    background-color: #007bff; /* Màu xanh chuẩn trong ảnh của bạn */
-    width: 100%;               /* Trải dài hết màn hình */
-    padding: 30px 0;           /* Tạo độ cao cho header */
+    background-color: #007bff;
+    width: 100%;
+    padding: 25px 0;
     color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .header-content h1 {
     margin: 0;
     text-align: center;
-    font-size: 32px;
-    padding-bottom: 20px;
+    font-size: 28px;
+    padding-bottom: 15px;
 }
 
 .navbar ul {
     list-style: none;
-    margin: 0;
     padding: 0;
+    margin: 0;
     display: flex;
-    justify-content: center; /* Căn giữa các mục menu */
-    gap: 25px;               /* Khoảng cách giữa các chữ */
+    justify-content: center;
+    gap: 20px;
 }
 
 .navbar ul li a {
     color: white;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
+    padding: 5px 10px;
 }
 
-.navbar ul li a:hover, 
-.navbar ul li a.active {
-    text-decoration: underline; /* Hoặc đổi màu khi di chuột vào */
+.navbar ul li a.active, .navbar ul li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
 }
-h1 {
+
+/* Nội dung chính */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
     text-align: center;
+    color: #333;
+    margin: 20px 0;
+}
+
+/* Hệ thống Grid 3 cột (1 cho form, 2 cho danh sách phụ) */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+}
+
+/* Thẻ Card trắng */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #007bff;
+    font-size: 18px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* Form inputs */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* Nút bấm Gradient giống trang giảng viên */
+button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #ff9a8b, #ff8c69); /* Tông cam giống ảnh GV */
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
+}
+
+/* Bảng hiển thị */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th {
+    background: #ff8c69; /* Màu cam tiêu đề bảng */
+    color: white;
+    padding: 12px;
+    font-size: 14px;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #eee;
+    text-align: center;
+    font-size: 14px;
+}
+
+tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Các nút trong bảng */
+.btn-edit { background: #4caf50; width: auto; padding: 5px 10px; margin-right: 5px; }
+.btn-delete { background: #f44336; width: auto; padding: 5px 10px; }
+
+/* Scroll cho bảng sinh viên nếu quá dài */
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+}
+/* Thêm khoảng cách giữa các nút */
+table td button {
+    margin: 0 8px; /* 0 là trên dưới, 8px là trái phải */
+    display: inline-block; /* Đảm bảo nút nhận thuộc tính margin */
+    width: auto; /* Để nút không chiếm hết chiều ngang ô */
+    min-width: 60px; /* Độ rộng tối thiểu để nút cân đối */
 }

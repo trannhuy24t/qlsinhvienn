@@ -54,18 +54,25 @@ if (!empty($_FILES['anh']['name'])) {
 }
 
 // ===== DELETE =====
+// Trình duyệt cần biết đây là JSON
+// ===== DELETE =====
 if ($action == "delete") {
-    $masv = $_POST['masv'];
+    $masv = mysqli_real_escape_string($conn, $_POST['masv']);
 
-    if (!mysqli_query($conn, "DELETE FROM sinhvien WHERE masv='$masv'")) {
+    // 1. Xóa điểm của sinh viên này trước để gỡ ràng buộc
+    mysqli_query($conn, "DELETE FROM diem WHERE masv = '$masv'");
+
+    // 2. Sau đó mới xóa sinh viên
+    $sql = "DELETE FROM sinhvien WHERE masv = '$masv'";
+
+    if (mysqli_query($conn, $sql)) {
+        echo json_encode(["status" => "success"]);
+    } else {
         echo json_encode([
             "status" => "error",
             "message" => mysqli_error($conn)
         ]);
-        exit;
     }
-
-    echo json_encode(["status" => "success"]);
     exit;
 }
 

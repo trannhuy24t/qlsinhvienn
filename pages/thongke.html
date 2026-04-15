@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thống kê - Quản Lý Sinh Viên</title>
+
+    <!-- Font + Icon -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/qlsinhvien/css/home.css">
+    <link rel="stylesheet" href="/qlsinhvien/css/thongke.css">
+
+    <!-- Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>Hệ Thống Quản Lý Sinh Viên</h1>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="/qlsinhvien/php/home.php">Trang chủ</a></li>
+                    <li><a href="sinhVien.html">Sinh viên</a></li>
+                    <li><a href="lopHoc.html">Lớp học</a></li>
+                    <li><a href="monHoc.html">Môn học</a></li>
+                    <li><a href="giangVien.html">Giảng viên</a></li>
+                    <li><a href="diem.html">Bảng điểm</a></li>
+                    <li><a href="baoCao.html">Báo cáo</a></li>
+                    <li><a href="thongKe.html" class="active">Thống kê</a></li>
+                    <li><a href="/qlsinhvien/php/logout.php">Đăng xuất</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Thống kê nhanh -->
+        <div class="quick-stats">
+            <div class="stat-box">
+                <i class="fas fa-users"></i>
+                <div>
+                    <p>Tổng sinh viên</p>
+                    <span id="total-sv">0</span>
+                </div>
+            </div>
+
+            <div class="stat-box">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <div>
+                    <p>Tổng giảng viên</p>
+                    <span id="total-gv">0</span>
+                </div>
+            </div>
+
+            <div class="stat-box">
+                <i class="fas fa-book"></i>
+                <div>
+                    <p>Môn học</p>
+                    <span id="total-mh">0</span>
+                </div>
+            </div>
+
+            <div class="stat-box">
+                <i class="fas fa-graduation-cap"></i>
+                <div>
+                    <p>Số môn có SV</p>
+                    <span id="total-lh">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nội dung -->
+        <div class="stats-grid">
+
+            <!-- Danh sách -->
+            <div class="stats-card">
+                <h3><i class="fas fa-list-ol"></i> Số SV theo môn</h3>
+
+                <div id="class-stats-list" class="scrollable-list">
+                    <p style="text-align:center; color:#999;">
+                        Đang tải dữ liệu...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Biểu đồ -->
+            <div class="stats-card">
+                <h3><i class="fas fa-chart-pie"></i> Tỷ lệ học lực</h3>
+
+                <div class="chart-wrapper">
+                    <canvas id="gradeChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- JS (QUAN TRỌNG: dùng đường dẫn tuyệt đối) -->
+    <script src="/qlsinhvien/js/thongke.js"></script>
+</body>
+</html>

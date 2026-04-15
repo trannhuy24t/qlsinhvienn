@@ -1,89 +1,116 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Quản lý môn học</title>
-<link rel="stylesheet" href="../css/monHoc.css">
+    <meta charset="UTF-8">
+    <title>Quản lý môn học</title>
+    <link rel="stylesheet" href="../css/monHoc.css">
 </head>
 
 <body>
     <header class="main-header">
-    <div class="container">
-        <h1>Hệ Thống Quản Lý Sinh Viên</h1>
-        <nav class="navbar">
-            <ul>
-                <li><a href="home.html">Trang chủ</a></li>
-                <li><a href="sinhVien.html" class="active">Sinh viên</a></li>
-                <li><a href="lopHoc.html">Lớp học</a></li>
-                <li><a href="monHoc.html">Môn học</a></li>
-                <li><a href="giangVien.html">Giảng viên</a></li>
-                <li><a href="diem.html">Bảng điểm</a></li>
-                <li><a href="baoCao.html">Báo cáo</a></li>
-                <li><a href="thongKe.html">Thống kê</a></li>
-                <li><a href="logout.php">Đăng xuất</a></li>
-            </ul>
-        </nav>
+        <div class="container">
+            <h1>Hệ Thống Quản Lý Sinh Viên</h1>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="../php/home.php">Trang chủ</a></li>
+                    <li><a href="../pages/sinhVien.html">Sinh viên</a></li>
+                    <li><a href="../pages/lopHoc.html">Lớp học</a></li>
+                    <li><a href="../pages/monHoc.html" class="active">Môn học</a></li>
+                    <li><a href="../pages/giangVien.html">Giảng viên</a></li>
+                    <li><a href="../pages/diem.html">Bảng điểm</a></li>
+                    <li><a href="../pages/baoCao.html">Báo cáo</a></li>
+                    <li><a href="../pages/thongKe.html">Thống kê</a></li>
+                    <li><a href="../pages/dangnhap.html">Đăng xuất</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <h2>📚 Quản lý Môn học & Học kỳ</h2>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Thêm/Sửa môn</h3>
+            <form id="formMon" onsubmit="addMon(); return false;">
+                <input id="mamon" placeholder="Mã môn" required>
+                <input id="tenmon" placeholder="Tên môn" required>
+                <input id="sotinchi" type="number" placeholder="Số tín chỉ" required>
+                <input id="mota" placeholder="Mô tả">
+                <button type="submit" id="btnSubmitMon">Thêm môn</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Thêm/Sửa học kỳ</h3>
+            <form id="formHK" onsubmit="addHK(); return false;">
+                <input id="mahocky" placeholder="Mã HK" required>
+                <input id="tenhocky" placeholder="Tên HK (Ví dụ: Học kỳ 1)" required>
+                <input id="namhoc" placeholder="Năm học (Ví dụ: 2025-2026)" required>
+                <button type="submit" id="btnSubmitHK">Thêm học kỳ</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Mở lớp học phần</h3>
+            <form id="formLHP" onsubmit="addLHP(); return false;">
+                <input id="malhp" placeholder="Mã LHP" required>
+                <input id="magv" placeholder="Mã GV" required>
+                
+                <label>Môn học:</label>
+                <select id="mamonSelect" required></select>
+                
+                <label>Học kỳ:</label>
+                <select id="hkSelect" required></select>
+
+                <button type="submit" id="btnSubmitLHP">Mở lớp</button>
+            </form>
+        </div>
     </div>
-</header>
 
-<h2>📚 Quản lý Môn học</h2>
+    <hr>
 
-<div class="grid">
+    <h3>Danh sách môn học</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Mã</th>
+                <th>Tên</th>
+                <th>TC</th>
+                <th>Mô tả</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="monTable"></tbody>
+    </table>
 
-<div class="card">
-<h3>Thêm môn</h3>
-<form onsubmit="addMon(); return false;">
-<input id="mamon" placeholder="Mã môn">
-<input id="tenmon" placeholder="Tên môn">
-<input id="sotinchi" placeholder="Số tín chỉ">
-<input id="mota" placeholder="Mô tả">
-<button>Thêm</button>
-</form>
-</div>
+    <h3>Danh sách học kỳ</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Mã HK</th>
+                <th>Tên Học Kỳ</th>
+                <th>Năm Học</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="hkTable"></tbody>
+    </table>
 
-<div class="card">
-<h3>Học kỳ</h3>
-<form onsubmit="addHK(); return false;">
-<input id="mahocky" placeholder="Mã HK">
-<input id="tenhocky" placeholder="Tên HK">
-<input id="namhoc" placeholder="Năm học">
-<button>Thêm</button>
-</form>
-</div>
+    <h3>Danh sách lớp học phần</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Mã LHP</th>
+                <th>Tên Môn</th>
+                <th>Mã GV</th>
+                <th>Học kỳ</th>
+                <th>Năm học</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="lhpTable"></tbody>
+    </table>
 
-<div class="card">
-<h3>Lớp học phần</h3>
-<form onsubmit="addLHP(); return false;">
-<input id="malhp" placeholder="Mã LHP">
-<input id="magv" placeholder="Mã GV">
-
-<select id="mamonSelect"></select>
-<select id="hkSelect"></select>
-
-<button>Mở lớp</button>
-</form>
-</div>
-
-</div>
-
-<hr>
-
-<h3>Danh sách môn học</h3>
-<table>
-<thead>
-<tr><th>Mã</th><th>Tên</th><th>TC</th><th>Mô tả</th><th></th></tr>
-</thead>
-<tbody id="monTable"></tbody>
-</table>
-
-<h3>Lớp học phần</h3>
-<table>
-<thead>
-<tr><th>LHP</th><th>Môn</th><th>GV</th><th>Học kỳ</th><th>Năm</th></tr>
-</thead>
-<tbody id="lhpTable"></tbody>
-</table>
-
-<script src="../js/monHoc.js"></script>
+    <script src="../js/monHoc.js"></script>
 </body>
 </html>

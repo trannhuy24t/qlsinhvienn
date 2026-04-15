@@ -1,0 +1,147 @@
+/* Tổng thể trang */
+body {
+    background-color: #f0f2f5; /* Màu nền xám nhạt hiện đại */
+    color: #1c1e21;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Grid layout */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+/* Thẻ Card Thống kê */
+.stats-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px; /* Bo góc lớn nhìn hiện đại hơn */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Đổ bóng cực nhẹ */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.stats-card:hover {
+    transform: translateY(-5px); /* Hiệu ứng bay lên khi di chuột */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề trong Card */
+.stats-card h3 {
+    font-size: 20px;
+    color: #007bff;
+    margin-top: 0;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+}
+
+.stats-card h3::before {
+    content: "";
+    width: 5px;
+    height: 20px;
+    background: #007bff;
+    border-radius: 10px;
+}
+
+/* Danh sách lớp */
+.class-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.class-item:last-child {
+    border-bottom: none;
+}
+
+.class-item span {
+    font-size: 16px;
+    color: #4b4b4b;
+}
+
+.class-item b {
+    background: #e7f3ff;
+    color: #007bff;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+/* Container biểu đồ */
+.chart-container {
+    position: relative;
+    height: 350px;
+    width: 100%;
+}
+
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* Quick Stats Row */
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-left: 5px solid #007bff; /* Tạo điểm nhấn màu sắc */
+}
+
+.stat-box i {
+    font-size: 2.5rem;
+    color: #007bff;
+    opacity: 0.8;
+}
+
+.stat-box p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.stat-box span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Tinh chỉnh Header Card */
+.stats-card h3 i {
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 300px; /* Khống chế chiều cao biểu đồ cho cân bằng */
+    width: 100%;
+}
+
+.scrollable-list {
+    max-height: 300px;
+    overflow-y: auto; /* Cho phép cuộn nếu danh sách lớp quá dài */
+}

@@ -38,6 +38,12 @@ if ($result && mysqli_num_rows($result) === 1) {
     $row = mysqli_fetch_assoc($result);
 
     if (password_verify($password, $row['password'])) {
+        $_SESSION['hoten'] = $row['username']; // Hoặc $row['hoten'] nếu bảng có cột này
+        $_SESSION['user'] = [
+            'id'       => $row['id'],
+            'username' => $row['username'],
+            'role'     => $row['role']
+        ];
 
         // ===== LƯU SESSION =====
         $_SESSION['user'] = [
@@ -49,7 +55,7 @@ if ($result && mysqli_num_rows($result) === 1) {
         echo json_encode([
             "status" => "success",
             "message" => "Đăng nhập thành công!",
-            "redirect" => "../pages/home.html"
+            "redirect" => "../php/home.php"
         ], JSON_UNESCAPED_UNICODE);
         exit;
 

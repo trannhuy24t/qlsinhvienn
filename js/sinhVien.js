@@ -99,6 +99,9 @@ function add() {
 function deleteSV(id) {
     if (!confirm("Bạn có chắc muốn xóa sinh viên này?")) return;
 
+    // Log ra để kiểm tra id có tồn tại không trước khi gửi
+    console.log("Đang xóa sinh viên có mã:", id);
+
     const formData = new FormData();
     formData.append("action", "delete");
     formData.append("masv", id);
@@ -106,16 +109,24 @@ function deleteSV(id) {
     fetch("../php/sinhVien.php", {
         method: "POST",
         body: formData
+        // Không set Content-Type thủ công khi dùng FormData nhé
     })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === "success") {
-            loadData();
-        } else {
-            alert(data.message);
+    .then(res => res.text()) // Đọc text trước để check lỗi PHP (nếu có)
+    .then(text => {
+        console.log("Server phản hồi:", text); // Xem server trả về success hay error
+        try {
+            const data = JSON.parse(text);
+            if (data.status === "success") {
+                alert("Xóa thành công!");
+                loadData();
+            } else {
+                alert("Lỗi server: " + data.message);
+            }
+        } catch (e) {
+            alert("Lỗi định dạng phản hồi từ server!");
         }
     })
-    .catch(err => console.error(err));
+    .catch(err => console.error("Lỗi Fetch:", err));
 }
 
 // ===== SEARCH =====

@@ -103,3 +103,32 @@ th,td{
 h1 {
     text-align: center;
 }
+/* --- Định dạng chung cho nút trong bảng --- */
+td button {
+    width: auto;          /* Không chiếm 100% ô */
+    min-width: 70px;      /* Độ dài bằng nhau cho đẹp */
+    padding: 6px 12px;
+    margin: 0 4px;        /* Khoảng cách giữa 2 nút cạnh nhau */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: 0.3s;
+}
+
+/* Nút Sửa: Màu xanh dương đồng bộ Header */
+.btn-edit {
+    background-color: #007bff;
+}
+.btn-edit:hover {
+    background-color: #0056b3;
+}
+
+/* Nút Xóa: Màu đỏ để cảnh báo (tùy chọn, hoặc dùng xanh nhạt hơn) */
+.btn-delete {
+    background-color: #e74c3c;
+}
+.btn-delete:hover {
+    background-color: #c0392b;
+}

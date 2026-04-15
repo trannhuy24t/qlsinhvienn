@@ -71,12 +71,11 @@ function loadSV(){
             html += `<option value="${s.masv}">${s.hoten}</option>`;
         });
 
-        sv.innerHTML = html;
-        svGPA.innerHTML = html;
+        // Đổ dữ liệu vào tất cả các ô Select sinh viên cùng lúc
+        if(sv) sv.innerHTML = html;
+        if(svGPA) svGPA.innerHTML = html;
+        if(svTong) svTong.innerHTML = html; 
     })
-    .catch(err => {
-        console.error("Lỗi loadSV:", err);
-    });
 }
 
 // ===== LOAD LỚP HỌC PHẦN =====
@@ -179,12 +178,13 @@ function tinhGPA(){
 
 // ===== XUẤT PDF =====
 function xuatPDF(){
-    if(!svGPA.value){
+    // Đổi svGPA thành svTong để khớp với Select box trong phần Tổng kết
+    if(!svTong.value){
         alert("Chọn sinh viên để xuất PDF!");
         return;
     }
-
-    window.location.href = "../php/pdf.php?masv=" + svGPA.value;
+    // Chuyển hướng đến file pdf.php
+    window.location.href = "../php/pdf.php?masv=" + svTong.value;
 }
 
 // ===== CLEAR FORM =====
