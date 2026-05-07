@@ -1,36 +1,63 @@
-window.onload = function() {
-    const formdangky = document.getElementById("formdangky");
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("formdangky");
     const alertError = document.getElementById("alertError");
 
-    if (formdangky) {
-        formdangky.addEventListener("submit", function (e) {
-            e.preventDefault(); // Chặn việc load lại trang
+    if (!form) return;
 
-            alertError.style.display = "none";
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-            const formData = new FormData(formdangky);
+        // reset lỗi
+        alertError.style.display = "none";
+        alertError.innerText = "";
 
-            fetch("../php/dangky.php", {
+        // lấy dữ liệu
+        const ma = document.getElementById("ma").value.trim();
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const confirm = document.getElementById("confirmpassword").value.trim();
+
+        // ===== VALIDATE FRONTEND =====
+        if (!ma || !username || !password || !confirm) {
+            showError("Vui lòng nhập đầy đủ thông tin!");
+            return;
+        }
+
+        if (password.length < 6) {
+            showError("Mật khẩu phải từ 6 ký tự trở lên!");
+            return;
+        }
+
+        if (password !== confirm) {
+            showError("Mật khẩu xác nhận không khớp!");
+            return;
+        }
+
+        try {
+            const formData = new FormData(form);
+
+            const res = await fetch("../php/dangky.php", {
                 method: "POST",
                 body: formData
-            })
-            .then(res => res.json()) // Chuyển phản hồi từ PHP sang dạng JSON
-            .then(data => {
-                if (data.status === "error") {
-                    // Nếu có lỗi, hiển thị thông báo lỗi ngay tại trang
-                    alertError.innerText = data.message;
-                    alertError.style.display = "block";
-                } else {
-                    // Nếu thành công, thông báo và chuyển hướng sang trang đăng nhập
-                    alert("Đăng ký thành công!");
-                    window.location.href = "dangnhap.html";
-                }
-            })
-            .catch(err => {
-                alertError.innerText = "Lỗi hệ thống không thể đăng ký!";
-                alertError.style.display = "block";
-                console.error(err);
             });
-        });
+
+            const data = await res.json();
+
+            if (data.status === "error") {
+                showError(data.message);
+            } else {
+                alert("Đăng ký thành công!");
+                window.location.href = "dangnhap.html";
+            }
+
+        } catch (err) {
+            showError("Lỗi hệ thống, vui lòng thử lại!");
+            console.error(err);
+        }
+    });
+
+    function showError(message) {
+        alertError.innerText = message;
+        alertError.style.display = "block";
     }
-}
+});

@@ -2,124 +2,152 @@
 session_start();
 include "config.php";
 
+/** @var mysqli $conn */ 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Đảm bảo luôn trả về JSON để JavaScript không bị lỗi "dữ liệu không hợp lệ"
 header('Content-Type: application/json; charset=utf-8');
 
 $action = $_POST['action'] ?? $_GET['action'] ?? '';
 
-// ===== ADD =====
+// ===== 1. CHỨC NĂNG THÊM SINH VIÊN =====
 if ($action == "add") {
-    $masv = $_POST['masv'];
-    $hoten = $_POST['hoten'];
-    $ngaysinh = $_POST['ngaysinh'];
-    $gioitinh = $_POST['gioitinh'];
-    $email = $_POST['email'];
-    $sodienthoai = $_POST['sodienthoai'];
-    $diachi = $_POST['diachi'];
-    $malop = $_POST['malop'];
+    // Bảo mật dữ liệu đầu vào bằng mysqli_real_escape_string
+    $masv = mysqli_real_escape_string($conn, $_POST['masv']);
+    $hoten = mysqli_real_escape_string($conn, $_POST['hoten']);
+    $ngaysinh = mysqli_real_escape_string($conn, $_POST['ngaysinh']);
+    $gioitinh = mysqli_real_escape_string($conn, $_POST['gioitinh']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $sodienthoai = mysqli_real_escape_string($conn, $_POST['sodienthoai']);
+    $diachi = mysqli_real_escape_string($conn, $_POST['diachi']);
+    $malop = mysqli_real_escape_string($conn, $_POST['malop']);
 
-// Sửa đoạn này trong sinhVien.php
-$anh = "";
-if (!empty($_FILES['anh']['name'])) {
-    $anh = time() . "_" . $_FILES['anh']['name'];
-    
-    // Đảm bảo đường dẫn này đúng: từ file php nhảy ra ngoài rồi vào thư mục images
-    $target_dir = "../images/"; 
-    
-    // Kiểm tra nếu thư mục chưa tồn tại thì tạo mới hoặc báo lỗi nhẹ nhàng
-    if (!is_dir($target_dir)) {
-        mkdir($target_dir, 0777, true);
-    }
-
-    move_uploaded_file($_FILES['anh']['tmp_name'], $target_dir . $anh);
-}
-
-    $sql = "INSERT INTO sinhvien 
-    (masv, hoten, ngaysinh, gioitinh, email, sodienthoai, diachi, malop, anh)
-    VALUES 
-    ('$masv','$hoten','$ngaysinh','$gioitinh','$email','$sodienthoai','$diachi','$malop','$anh')";
-
-    if (!mysqli_query($conn, $sql)) {
-        echo json_encode([
-            "status" => "error",
-            "message" => mysqli_error($conn)
-        ]);
+    // Kiểm tra trùng mã sinh viên trước khi thêm
+    $check = mysqli_query($conn, "SELECT masv FROM sinhvien WHERE masv = '$masv'");
+    if (mysqli_num_rows($check) > 0) {
+        echo json_encode(["status" => "error", "message" => "Mã sinh viên '$masv' đã tồn tại!"]);
         exit;
     }
 
-    echo json_encode(["status" => "success"]);
-    exit;
-}
+    // Xử lý upload ảnh
+    $anh = "";
+    if (!empty($_FILES['anh']['name'])) {
+        $anh = time() . "_" . $_FILES['anh']['name'];
+        $target_dir = "../images/"; 
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+        move_uploaded_file($_FILES['anh']['tmp_name'], $target_dir . $anh);
+    }
 
-// ===== DELETE =====
-// Trình duyệt cần biết đây là JSON
-// ===== DELETE =====
-if ($action == "delete") {
-    $masv = mysqli_real_escape_string($conn, $_POST['masv']);
-
-    // 1. Xóa điểm của sinh viên này trước để gỡ ràng buộc
-    mysqli_query($conn, "DELETE FROM diem WHERE masv = '$masv'");
-
-    // 2. Sau đó mới xóa sinh viên
-    $sql = "DELETE FROM sinhvien WHERE masv = '$masv'";
+    $sql = "INSERT INTO sinhvien (masv, hoten, ngaysinh, gioitinh, email, sodienthoai, diachi, malop, anh)
+            VALUES ('$masv','$hoten','$ngaysinh','$gioitinh','$email','$sodienthoai','$diachi','$malop','$anh')";
 
     if (mysqli_query($conn, $sql)) {
         echo json_encode(["status" => "success"]);
     } else {
-        echo json_encode([
-            "status" => "error",
-            "message" => mysqli_error($conn)
-        ]);
+        echo json_encode(["status" => "error", "message" => mysqli_error($conn)]);
     }
     exit;
 }
 
-// ===== SEARCH =====
+// ===== 2. CHỨC NĂNG XÓA SINH VIÊN =====
+if ($action == "delete") {
+    $masv = mysqli_real_escape_string($conn, $_POST['masv']);
+
+    // Xóa dữ liệu liên quan ở bảng điểm trước (nếu có)
+    mysqli_query($conn, "DELETE FROM diem WHERE masv = '$masv'");
+
+    $sql = "DELETE FROM sinhvien WHERE masv = '$masv'";
+    if (mysqli_query($conn, $sql)) {
+        echo json_encode(["status" => "success"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => mysqli_error($conn)]);
+    }
+    exit;
+}
+
+// ===== 3. CHỨC NĂNG CẬP NHẬT SINH VIÊN =====
+if ($action == "update") {
+    $masv = mysqli_real_escape_string($conn, $_POST['masv']);
+    $hoten = mysqli_real_escape_string($conn, $_POST['hoten']);
+    $ngaysinh = mysqli_real_escape_string($conn, $_POST['ngaysinh']);
+    $gioitinh = mysqli_real_escape_string($conn, $_POST['gioitinh']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $sodienthoai = mysqli_real_escape_string($conn, $_POST['sodienthoai']);
+    $diachi = mysqli_real_escape_string($conn, $_POST['diachi']);
+    $malop = mysqli_real_escape_string($conn, $_POST['malop']);
+
+    $sql_img = "";
+    if (!empty($_FILES['anh']['name'])) {
+        $anh = time() . "_" . $_FILES['anh']['name'];
+        $target_dir = "../images/";
+        if (move_uploaded_file($_FILES['anh']['tmp_name'], $target_dir . $anh)) {
+            $sql_img = ", anh = '$anh'";
+        }
+    }
+
+    $sql = "UPDATE sinhvien SET 
+            hoten = '$hoten', ngaysinh = '$ngaysinh', gioitinh = '$gioitinh', 
+            email = '$email', sodienthoai = '$sodienthoai', diachi = '$diachi', 
+            malop = '$malop' $sql_img 
+            WHERE masv = '$masv'";
+
+    if (mysqli_query($conn, $sql)) {
+        echo json_encode(["status" => "success"]);
+    } else {
+        echo json_encode(["status" => "error", "message" => mysqli_error($conn)]);
+    }
+    exit;
+}
+
+// ===== 4. CHỨC NĂNG TÌM KIẾM / LỌC THEO LỚP =====
 if ($action == "search") {
     $where = [];
 
     if (!empty($_POST['masv'])) {
-        $where[] = "masv LIKE '%{$_POST['masv']}%'";
+        $where[] = "sv.masv LIKE '%" . mysqli_real_escape_string($conn, $_POST['masv']) . "%'";
     }
     if (!empty($_POST['hoten'])) {
-        $where[] = "hoten LIKE '%{$_POST['hoten']}%'";
+        $where[] = "sv.hoten LIKE '%" . mysqli_real_escape_string($conn, $_POST['hoten']) . "%'";
     }
+    // Fix lỗi lọc theo lớp học
     if (!empty($_POST['malop'])) {
-        $where[] = "malop = '{$_POST['malop']}'";
+        $where[] = "sv.malop = '" . mysqli_real_escape_string($conn, $_POST['malop']) . "'";
     }
     if (!empty($_POST['gioitinh'])) {
-        $where[] = "gioitinh = '{$_POST['gioitinh']}'";
+        $where[] = "sv.gioitinh = '" . mysqli_real_escape_string($conn, $_POST['gioitinh']) . "'";
     }
     if (!empty($_POST['from']) && !empty($_POST['to'])) {
-        $where[] = "ngaysinh BETWEEN '{$_POST['from']}' AND '{$_POST['to']}'";
+        $where[] = "sv.ngaysinh BETWEEN '{$_POST['from']}' AND '{$_POST['to']}'";
     }
 
-    $sql = "SELECT * FROM sinhvien";
+    $sql = "SELECT sv.*, l.tenlop FROM sinhvien sv LEFT JOIN lop l ON sv.malop = l.malop";
     if (count($where) > 0) {
         $sql .= " WHERE " . implode(" AND ", $where);
     }
 
     $result = mysqli_query($conn, $sql);
     $data = [];
-
-    while ($row = mysqli_fetch_assoc($result)) {
-        $data[] = $row;
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
     }
-
     echo json_encode($data);
     exit;
 }
 
-// ===== LIST =====
-$result = mysqli_query($conn, "SELECT * FROM sinhvien");
+// ===== 5. MẶC ĐỊNH: LIẾT KÊ TẤT CẢ SINH VIÊN =====
+$sql = "SELECT sv.*, l.tenlop FROM sinhvien sv LEFT JOIN lop l ON sv.malop = l.malop";
+$result = mysqli_query($conn, $sql);
 $data = [];
-
-while ($row = mysqli_fetch_assoc($result)) {
-    $data[] = $row;
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = $row;
+    }
 }
-
 echo json_encode($data);
 exit;
 ?>

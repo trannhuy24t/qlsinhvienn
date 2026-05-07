@@ -1,105 +1,193 @@
-body {
+/* --- RESET & CHUNG --- */
+* {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
-h1{
-    text-align:center;
-    color:#ffffff;
-}
-h2{
-    text-align:center;
-    color:#080808;
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
 }
 
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
-.card{
-    background:white;
-    padding:15px;
-    border-radius:10px;
-    box-shadow:0 3px 10px rgba(0,0,0,0.1);
-}
-
-input,select{
-    width:100%;
-    padding:8px;
-    margin:5px 0;
-    border-radius:6px;
-    border:1px solid #ccc;
-}
-
-button{
-    width:100%;
-    padding:10px;
-    background:linear-gradient(45deg,#ff7e5f,#feb47b);
-    border:none;
-    color:white;
-    border-radius:6px;
-    cursor:pointer;
-}
-
-button:hover{
-    opacity:0.85;
-}
-
-table{
-    width:100%;
-    margin-top:10px;
-    border-collapse:collapse;
-    background:white;
-}
-
-th{
-    background:#ff7e5f;
-    color:white;
-}
-
-th,td{
-    padding:10px;
-    border:1px solid #ddd;
-    text-align:center;
-}
+/* --- SIDEBAR DỌC (GIỮ NGUYÊN ĐỂ ĐỒNG BỘ) --- */
 .main-header {
-    background-color: #007bff; /* Màu xanh chuẩn trong ảnh của bạn */
-    width: 100%;               /* Trải dài hết màn hình */
-    padding: 30px 0;           /* Tạo độ cao cho header */
+    background-color: #007bff;
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
     color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
 }
 
-.header-content h1 {
-    margin: 0;
+.main-header h1 {
+    font-size: 18px;
     text-align: center;
-    font-size: 32px;
-    padding-bottom: 20px;
+    padding: 30px 15px;
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-transform: uppercase;
 }
 
 .navbar ul {
     list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center; /* Căn giữa các mục menu */
-    gap: 25px;               /* Khoảng cách giữa các chữ */
 }
 
 .navbar ul li a {
-    color: white;
+    display: block;
+    padding: 15px 25px;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
+    transition: 0.3s;
 }
 
 .navbar ul li a:hover, 
 .navbar ul li a.active {
-    text-decoration: underline; /* Hoặc đổi màu khi di chuột vào */
+    background: rgba(255, 255, 255, 0.15);
+    border-left: 5px solid white;
+    color: white;
 }
-h1 {
+
+/* --- NỘI DUNG CHÍNH --- */
+.main-content-wrapper {
+    margin-left: 250px;
+    padding: 40px;
+    min-height: 100vh;
+}
+
+.page-title {
+    font-size: 26px;
+    margin-bottom: 30px;
+    border-left: 6px solid #007bff;
+    padding-left: 15px;
+}
+
+/* --- GRID & CARDS --- */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    color: #007bff;
+}
+
+/* --- FORM INPUTS --- */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* --- HỆ THỐNG NÚT BẤM (FIX LẠI) --- */
+
+/* 1. Nút Thêm / Cập nhật (Nút chính trong Form) */
+button#btnSubmit, 
+button#btnAssign {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Màu cam đặc trưng */
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(255, 126, 95, 0.2);
+}
+
+button#btnSubmit:hover, 
+button#btnAssign:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 126, 95, 0.3);
+}
+
+/* Trạng thái nút khi đang Cập nhật (đổi sang màu xanh lá để phân biệt) */
+button.btn-update-mode {
+    background: linear-gradient(135deg, #28a745, #5cd85d) !important;
+    box-shadow: 0 4px 6px rgba(40, 167, 69, 0.2) !important;
+}
+
+/* 2. Nút Sửa / Xóa trong bảng */
+.btn-edit, 
+.btn-delete {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 14px;
+}
+
+/* Nút Sửa: Màu xanh dương nhẹ/Trắng viền xanh */
+.btn-edit {
+    background-color: #e7f1ff;
+    color: #007bff;
+    border: 1px solid #007bff;
+    margin-right: 5px;
+}
+
+.btn-edit:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Nút Xóa: Màu đỏ nhạt/Trắng viền đỏ */
+.btn-delete {
+    background-color: #fff5f5;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+.btn-delete:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* --- TABLE --- */
+.table-wrapper {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-bottom: 2px solid #007bff;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
     text-align: center;
+}
+
+tr:hover {
+    background-color: #fafafa;
 }

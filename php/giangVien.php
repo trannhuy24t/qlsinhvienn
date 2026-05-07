@@ -1,5 +1,6 @@
 <?php
 include "config.php";
+/** @var mysqli $conn */ // Thêm dòng này để IDE nhận diện $conn là mysqli
 header('Content-Type: application/json; charset=utf-8');
 
 $action = $_POST['action'] ?? $_GET['action'] ?? '';

@@ -1,101 +1,69 @@
-/* Tổng thể trang */
+/* --- RESET & CHUNG --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background-color: #f0f2f5; /* Màu nền xám nhạt hiện đại */
+    background-color: #f0f2f5;
     color: #1c1e21;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex; /* Thiết lập layout Flexbox */
 }
 
+/* --- SIDEBAR DỌC (Cố định bên trái) --- */
+.main-header {
+    background-color: #007bff;
+    width: 250px;
+    height: 100vh;
+    position: fixed; /* Cố định sidebar không trôi khi cuộn trang */
+    top: 0;
+    left: 0;
+    color: white;
+    z-index: 1000;
+}
+
+.main-header h1 {
+    font-size: 18px;
+    text-align: center;
+    padding: 30px 15px;
+    line-height: 1.5;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar ul {
+    list-style: none;
+}
+
+.navbar ul li a {
+    display: block;
+    padding: 15px 25px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.navbar ul li a:hover, 
+.navbar ul li a.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-left: 5px solid white;
+    color: white;
+}
+
+/* --- NỘI DUNG CHÍNH (Bên phải Sidebar) --- */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Grid layout */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-/* Thẻ Card Thống kê */
-.stats-card {
-    background: #ffffff;
+    margin-left: 250px; /* Đẩy nội dung sang phải 250px bằng chiều rộng Sidebar */
     padding: 30px;
-    border-radius: 16px; /* Bo góc lớn nhìn hiện đại hơn */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Đổ bóng cực nhẹ */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    width: calc(100% - 250px);
+    min-height: 100vh;
 }
 
-.stats-card:hover {
-    transform: translateY(-5px); /* Hiệu ứng bay lên khi di chuột */
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-}
-
-/* Tiêu đề trong Card */
-.stats-card h3 {
-    font-size: 20px;
-    color: #007bff;
-    margin-top: 0;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-}
-
-.stats-card h3::before {
-    content: "";
-    width: 5px;
-    height: 20px;
-    background: #007bff;
-    border-radius: 10px;
-}
-
-/* Danh sách lớp */
-.class-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-    border-bottom: 1px solid #f0f2f5;
-}
-
-.class-item:last-child {
-    border-bottom: none;
-}
-
-.class-item span {
-    font-size: 16px;
-    color: #4b4b4b;
-}
-
-.class-item b {
-    background: #e7f3ff;
-    color: #007bff;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 14px;
-}
-
-/* Container biểu đồ */
-.chart-container {
-    position: relative;
-    height: 350px;
-    width: 100%;
-}
-
-/* Responsive cho mobile */
-@media (max-width: 768px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-}
-/* Quick Stats Row */
+/* --- QUICK STATS ROW (Các ô vuông nhỏ trên cùng) --- */
 .quick-stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
     margin-bottom: 30px;
 }
@@ -108,7 +76,12 @@ body {
     align-items: center;
     gap: 15px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    border-left: 5px solid #007bff; /* Tạo điểm nhấn màu sắc */
+    border-left: 5px solid #007bff; /* Điểm nhấn xanh dương */
+    transition: 0.3s;
+}
+
+.stat-box:hover {
+    transform: translateY(-3px);
 }
 
 .stat-box i {
@@ -117,31 +90,89 @@ body {
     opacity: 0.8;
 }
 
-.stat-box p {
+.stat-info p {
     margin: 0;
     color: #666;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.stat-box span {
-    font-size: 1.5rem;
+.stat-info span {
+    font-size: 1.8rem;
     font-weight: bold;
     color: #333;
 }
 
-/* Tinh chỉnh Header Card */
-.stats-card h3 i {
-    margin-right: 10px;
-    color: #007bff;
+/* --- GRID BIỂU ĐỒ & DANH SÁCH --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 30px;
 }
 
+.stats-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.stats-card h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stats-card h3::before {
+    content: "";
+    width: 6px;
+    height: 20px;
+    background: #007bff;
+    border-radius: 3px;
+}
+
+/* Danh sách lớp có thanh cuộn */
+.scrollable-list {
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.class-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.class-item b {
+    background: #e7f3ff;
+    color: #007bff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+/* Tối ưu Chart Wrapper */
 .chart-wrapper {
     position: relative;
-    height: 300px; /* Khống chế chiều cao biểu đồ cho cân bằng */
+    height: 300px;
     width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.scrollable-list {
-    max-height: 300px;
-    overflow-y: auto; /* Cho phép cuộn nếu danh sách lớp quá dài */
+/* Thanh cuộn đẹp */
+.scrollable-list::-webkit-scrollbar {
+    width: 6px;
+}
+.scrollable-list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
 }

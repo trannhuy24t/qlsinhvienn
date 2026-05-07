@@ -17,20 +17,21 @@ const s_gioitinh = document.getElementById("s_gioitinh");
 const from = document.getElementById("from");
 const to = document.getElementById("to");
 
-// ===== LOAD DATA =====
+let listSinhVien = []; // Biến lưu trữ dữ liệu tạm thời
+
 function loadData() {
     fetch("../php/sinhVien.php")
         .then(res => res.json())
-        .then(data => render(data))
-        .catch(err => {
-            console.error("Lỗi loadData:", err);
-        });
+        .then(data => {
+            listSinhVien = data; // Lưu dữ liệu vào biến toàn cục
+            render(data);
+        })
+        .catch(err => console.error("Lỗi loadData:", err));
 }
 
-// ===== RENDER =====
 function render(data) {
     let html = "";
-    if(!Array.isArray(data)) return; // Tránh lỗi nếu data không phải mảng
+    if(!Array.isArray(data)) return; 
 
     data.forEach(sv => {
         html += `
@@ -38,11 +39,20 @@ function render(data) {
             <td>${sv.masv}</td>
             <td>${sv.hoten}</td>
             <td>${sv.malop}</td>
+            <td>${sv.gioitinh || "Không có"}</td>
+            <td>${sv.tenlop || "Chưa cập nhật"}</td>
             <td>
-                ${sv.anh ? `<img src="../images/${sv.anh}" width="50">` : "Không có"}
+                ${sv.anh ? `<img src="../images/${sv.anh}" width="50" style="border-radius:4px">` : "None"}
             </td>
             <td>
-                <button onclick="deleteSV('${sv.masv}')" style="color:red">Xóa</button>
+                <div style="display: flex; gap: 5px; justify-content: center;">
+                    <button onclick="editSV('${sv.masv}')" class="btn-edit">
+                        <i class="fas fa-edit"></i> Sửa
+                    </button>
+                    <button onclick="deleteSV('${sv.masv}')" class="btn-delete">
+                        <i class="fas fa-trash"></i> Xóa
+                    </button>
+                </div>
             </td>
         </tr>`;
     });
@@ -127,6 +137,99 @@ function deleteSV(id) {
         }
     })
     .catch(err => console.error("Lỗi Fetch:", err));
+}
+function editSV(id) {
+    // 1. Tìm sinh viên trong danh sách dựa trên mã SV
+    const sv = listSinhVien.find(item => item.masv === id);
+    
+    if (sv) {
+        // 2. Đổ dữ liệu lên các ô input
+        masv.value = sv.masv;
+        hoten.value = sv.hoten;
+        ngaysinh.value = sv.ngaysinh;
+        gioitinh.value = sv.gioitinh;
+        email.value = sv.email;
+        sodienthoai.value = sv.sodienthoai;
+        diachi.value = sv.diachi;
+        malop.value = sv.malop;
+
+        // Khóa mã SV không cho sửa vì là khóa chính
+        masv.readOnly = true;
+        masv.style.backgroundColor = "#f0f0f0";
+
+        // 3. THAY ĐỔI NÚT THÀNH CẬP NHẬT
+        const btnSubmit = document.getElementById("btn-submit");
+        if (btnSubmit) {
+            btnSubmit.innerText = "Cập nhật"; // Đổi chữ trên nút
+            btnSubmit.style.backgroundColor = "#ffc107"; // Đổi màu sang vàng (tùy chọn)
+            
+            // Đổi hàm khi nhấn nút từ add() sang updateSV()
+            btnSubmit.setAttribute("onclick", "updateSV()");
+        }
+
+        // Cuộn lên đầu trang để người dùng thực hiện sửa
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+function updateSV() {
+    const formData = new FormData();
+    formData.append("action", "update"); // Hành động update
+    formData.append("masv", masv.value.trim());
+    formData.append("hoten", hoten.value.trim());
+    formData.append("ngaysinh", ngaysinh.value);
+    formData.append("gioitinh", gioitinh.value);
+    formData.append("email", email.value.trim());
+    formData.append("sodienthoai", sodienthoai.value.trim());
+    formData.append("diachi", diachi.value.trim());
+    formData.append("malop", malop.value.trim());
+
+    if (anh.files.length > 0) {
+        formData.append("anh", anh.files[0]);
+    }
+
+    fetch("../php/sinhVien.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "success") {
+            alert("Cập nhật thành công!");
+            const btnSubmit = document.getElementById("btn-submit");
+            btnSubmit.innerText = "Thêm sinh viên";
+            btnSubmit.style.backgroundColor = "#28a745"; // Trả về màu xanh ban đầu
+            btnSubmit.setAttribute("onclick", "add()");
+            
+            // Mở khóa lại ô Mã SV
+            masv.readOnly = false;
+            masv.style.backgroundColor = "white";
+
+            loadData(); // Load lại bảng
+            document.getElementById("formsinhvien").reset();
+        } else {
+            alert("Lỗi: " + data.message);
+        }
+    })
+    .catch(err => console.error("Lỗi update:", err));
+}
+
+// Hàm bổ trợ để đưa Form về trạng thái ban đầu
+function resetForm() {
+    const form = document.getElementById("formsinhvien");
+    form.reset();
+    form.onsubmit = function(e) {
+        e.preventDefault();
+        add(); // Quay lại hàm add ban đầu
+    };
+    
+    masv.readOnly = false;
+    masv.style.backgroundColor = "white";
+    
+    const btnAction = document.querySelector(".btn-save");
+    if (btnAction) {
+        btnAction.innerText = "Thêm sinh viên";
+        btnAction.className = "btn-save";
+    }
 }
 
 // ===== SEARCH =====

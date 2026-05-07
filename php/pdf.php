@@ -3,6 +3,7 @@
 ob_start(); 
 
 include "config.php";
+/** @var mysqli $conn */ // Thêm dòng này để IDE nhận diện $conn là mysqli
 require('../fpdf.php'); 
 
 $masv = $_GET['masv'] ?? '';

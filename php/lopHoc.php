@@ -1,5 +1,6 @@
 <?php
 include "config.php";
+/** @var mysqli $conn */ // Thêm dòng này để IDE nhận diện $conn là mysqli
 header('Content-Type: application/json');
 
 // ===== ACTION =====
@@ -58,7 +59,7 @@ if ($action == "update") {
 }
 
 // ===== LIST =====
-$result = mysqli_query($conn, "SELECT * FROM lop");
+$result = mysqli_query($conn, "SELECT * FROM lop ORDER BY malop");
 $data = [];
 
 while ($row = mysqli_fetch_assoc($result)) {

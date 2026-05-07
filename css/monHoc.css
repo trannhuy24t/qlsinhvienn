@@ -1,134 +1,206 @@
-body {
+/* --- RESET & CÀI ĐẶT CHUNG --- */
+* {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
-
-h1{
-    text-align:center;
-    color:#f6f2f2;
-}
-h2{
-    text-align:center;
-    color:#0b0b0c1b;
-}
-.grid{
-    display:grid;
-    grid-template-columns: repeat(3,1fr);
-    gap:15px;
-}
-
-.card{
-    background:white;
-    padding:15px;
-    border-radius:12px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-input,select{
-    width:100%;
-    padding:8px;
-    margin:5px 0;
-    border-radius:6px;
-    border:1px solid #ccc;
-}
-
-button{
-    width:100%;
-    padding:10px;
-    background:linear-gradient(45deg,#00c6ff,#0072ff);
-    border:none;
-    color:white;
-    border-radius:6px;
-    cursor:pointer;
-}
-
-button:hover{
-    opacity:0.8;
-}
-
-table{
-    width:100%;
-    margin-top:10px;
-    border-collapse:collapse;
-    background:white;
-}
-
-th{
-    background:#0072ff;
-    color:white;
-}
-
-th,td{
-    padding:10px;
-    border:1px solid #ddd;
-    text-align:center;
-}
-.main-header {
-    background-color: #007bff; /* Màu xanh chuẩn trong ảnh của bạn */
-    width: 100%;               /* Trải dài hết màn hình */
-    padding: 30px 0;           /* Tạo độ cao cho header */
-    color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.header-content h1 {
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    /* Bỏ display: flex ở đây nếu dùng position: fixed cho sidebar */
     margin: 0;
+}
+
+/* --- SIDEBAR DỌC (CỐ ĐỊNH BÊN TRÁI) --- */
+.main-header {
+    background-color: #007bff;
+    width: 250px; 
+    height: 100vh;
+    position: fixed; /* Sidebar luôn cố định */
+    top: 0;
+    left: 0;
+    color: white;
+    z-index: 1000;
+    overflow-y: auto; /* Thêm cái này để nếu menu dài quá vẫn cuộn được sidebar */
+}
+
+.main-header h1 {
+    font-size: 18px;
     text-align: center;
-    font-size: 32px;
-    padding-bottom: 20px;
+    padding: 30px 15px; /* Tăng padding để tiêu đề thoáng hơn */
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-transform: uppercase;
+}
+
+.navbar {
+    flex: 1;
 }
 
 .navbar ul {
     list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center; /* Căn giữa các mục menu */
-    gap: 25px;               /* Khoảng cách giữa các chữ */
+    padding: 15px 0;
 }
 
 .navbar ul li a {
-    color: white;
+    display: flex;
+    align-items: center; /* Căn giữa icon và chữ theo chiều dọc */
+    padding: 15px 25px;
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.navbar ul li a i {
+    margin-right: 15px; /* Khoảng cách giữa biểu tượng và chữ */
+    width: 20px;
+    text-align: center;
 }
 
 .navbar ul li a:hover, 
 .navbar ul li a.active {
-    text-decoration: underline; /* Hoặc đổi màu khi di chuột vào */
-}
-h1 {
-    text-align: center;
-}
-/* --- Định dạng chung cho nút trong bảng --- */
-td button {
-    width: auto;          /* Không chiếm 100% ô */
-    min-width: 70px;      /* Độ dài bằng nhau cho đẹp */
-    padding: 6px 12px;
-    margin: 0 4px;        /* Khoảng cách giữa 2 nút cạnh nhau */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
+    background: rgba(255, 255, 255, 0.15);
     color: white;
+    border-left: 6px solid white; /* Đánh dấu mục đang chọn */
+    font-weight: 600;
+}
+
+/* --- PHẦN NỘI DUNG CHÍNH (BÊN PHẢI) --- */
+.main-content-wrapper {
+    /* Đẩy toàn bộ khối nội dung sang phải 250px để không bị Sidebar đè lên */
+    margin-left: 250px; 
+    padding: 30px 40px; 
+    width: calc(100% - 250px); 
+    min-height: 100vh;
+    box-sizing: border-box;
+    background-color: #f4f7f6;
+    position: relative; /* Đảm bảo nội dung nằm đúng lớp */
+}
+
+h2 {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 26px;
+    color: #2c3e50;
+    border-left: 6px solid #007bff;
+    padding-left: 15px;
+}
+
+/* --- GRID LAYOUT CHO CÁC CARD NHẬP LIỆU --- */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Tự động điều chỉnh số cột */
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px; /* Bo góc mềm mại hơn */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.card h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #007bff;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 12px;
+}
+
+/* --- FORM & INPUT --- */
+form input, form select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #fcfcfc;
     transition: 0.3s;
 }
 
-/* Nút Sửa: Màu xanh dương đồng bộ Header */
-.btn-edit {
-    background-color: #007bff;
+form input:focus {
+    border-color: #007bff;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+    outline: none;
 }
-.btn-edit:hover {
+
+/* --- BẢNG DỮ LIỆU --- */
+.table-section h3 {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: #34495e;
+}
+
+.table-wrapper {
+    background: white;
+    border-radius: 12px;
+    overflow-x: auto; /* Cho phép cuộn ngang trên màn hình nhỏ */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: 600;
+    padding: 15px;
+    text-align: left;
+    border-bottom: 2px solid #edf2f7;
+}
+
+table td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+table tr:last-child td { border-bottom: none; }
+
+table tr:hover {
+    background-color: #f9fbff;
+}
+
+/* --- NÚT BẤM & HÀNH ĐỘNG --- */
+.btn-add {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-add:hover {
     background-color: #0056b3;
 }
 
-/* Nút Xóa: Màu đỏ để cảnh báo (tùy chọn, hoặc dùng xanh nhạt hơn) */
-.btn-delete {
-    background-color: #e74c3c;
+.btn-edit, .btn-delete {
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    margin-right: 5px;
 }
-.btn-delete:hover {
-    background-color: #c0392b;
-}
+
+.btn-edit { background-color: #ffc107; color: #000; }
+.btn-delete { background-color: #dc3545; }
+
+.btn-edit:hover { background-color: #e0a800; }
+.btn-delete:hover { background-color: #c82333; }

@@ -1,0 +1,107 @@
+/* Reset căn bản */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #f0f4ff 0%, #d9e2ff 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Card hồ sơ */
+.profile-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+}
+
+.profile-card h2 {
+    margin: 0 0 30px;
+    color: #4361ee;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Khu vực Avatar */
+.avatar-container {
+    margin-bottom: 25px;
+}
+
+.avatar-container i {
+    font-size: 80px;
+    color: #4361ee;
+    background: #eef2ff;
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 8px 20px rgba(67, 97, 238, 0.15);
+}
+
+/* Danh sách thông tin - Giải quyết vấn đề dính chữ */
+.info-list {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.info-item {
+    display: flex; /* Dàn hàng ngang */
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0; /* Đường kẻ mờ ngăn cách */
+}
+
+.info-item i {
+    width: 35px; /* Cố định độ rộng icon để chữ thẳng hàng */
+    color: #4361ee;
+    font-size: 18px;
+    text-align: center;
+}
+
+.info-label {
+    font-weight: 600;
+    width: 120px; /* Độ rộng nhãn bên trái */
+    color: #8d99ae;
+    font-size: 14px;
+}
+
+.info-value {
+    font-size: 15px;
+    color: #2b2d42;
+    flex: 1; /* Tự động lấp đầy khoảng trống */
+}
+
+/* Nút quay lại */
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #4361ee;
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+    background: #3046c8;
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+}

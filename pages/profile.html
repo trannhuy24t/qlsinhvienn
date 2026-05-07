@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hồ sơ cá nhân</title>
+    <link rel="stylesheet" href="../css/profile.css">
+</head>
+<body>
+
+<div class="profile-container">
+    <div class="profile-card">
+        <h2>Hồ sơ cá nhân</h2>
+
+        <div class="avatar">
+            <i class="fas fa-user-circle"></i>
+        </div>
+
+        <div class="info">
+            <p><strong>Họ tên:</strong> <?php echo $data['hoten']; ?></p>
+
+            <p><strong>Tuổi:</strong> 
+                <?php echo date("Y") - $data['namsinh']; ?>
+            </p>
+
+            <?php if($role == "student"): ?>
+                <p><strong>Mã sinh viên:</strong> <?php echo $data['masv']; ?></p>
+                <p><strong>Lớp:</strong> <?php echo $data['lop']; ?></p>
+            <?php else: ?>
+                <p><strong>Mã giảng viên:</strong> <?php echo $data['magv']; ?></p>
+                <p><strong>Chức vụ:</strong> <?php echo $data['chucvu']; ?></p>
+            <?php endif; ?>
+
+        </div>
+
+        <a href="home.php" class="btn">← Quay lại</a>
+    </div>
+</div>
+
+</body>
+</html>

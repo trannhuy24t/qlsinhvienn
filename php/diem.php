@@ -1,5 +1,6 @@
 <?php
 include "config.php";
+/** @var mysqli $conn */ // Thêm dòng này để IDE nhận diện $conn là mysqli
 header('Content-Type: application/json');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);

@@ -1,90 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý sinh viên</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/sinhVien.css">
 </head>
 <body>
+
 <header class="main-header">
-    <div class="container">
-        <h1>Hệ Thống Quản Lý Sinh Viên</h1>
-        <nav class="navbar">
-            <ul>
-                <li><a href="../php/home.php">Trang chủ</a></li>
-                <li><a href="../pages/sinhVien.html" class="active">Sinh viên</a></li>
-                <li><a href="../pages/lopHoc.html">Lớp học</a></li>
-                <li><a href="../pages/monHoc.html">Môn học</a></li>
-                <li><a href="../pages/giangVien.html">Giảng viên</a></li>
-                <li><a href="../pages/diem.html">Bảng điểm</a></li>
-                <li><a href="../pages/baoCao.html">Báo cáo</a></li>
-                <li><a href="../pages/thongKe.html">Thống kê</a></li>
-                <li><a href="../pages/dangnhap.html">Đăng xuất</a></li>
-            </ul>
-        </nav>
-    </div>
+    <h1>Hệ Thống Quản Lý<br>Sinh Viên</h1>
+    <nav class="navbar">
+        <ul>
+            <li><a href="../php/home.php"><i class="fas fa-home"></i> Trang chủ</a></li>
+            <li><a href="../pages/sinhVien.html" class="active"><i class="fas fa-user-graduate"></i> Sinh viên</a></li>
+            <li><a href="../pages/lopHoc.html"><i class="fas fa-school"></i> Lớp học</a></li>
+            <li><a href="../pages/monHoc.html"><i class="fas fa-book"></i> Môn học</a></li>
+            <li><a href="../pages/giangVien.html"><i class="fas fa-chalkboard-teacher"></i> Giảng viên</a></li>
+            <li><a href="../pages/diem.html"><i class="fas fa-poll-h"></i> Bảng điểm</a></li>
+            <li><a href="../pages/baoCao.html"><i class="fas fa-file-alt"></i> Báo cáo</a></li>
+            <li><a href="../pages/thongKe.html"><i class="fas fa-chart-line"></i> Thống kê</a></li>
+            <li><a href="../pages/dangnhap.html"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+        </ul>
+    </nav>
 </header>
-    <h1>Quản lý sinh viên</h1>
 
-<div class="form">
-    <form id="formsinhvien" onsubmit="add(); return false;">
+<main class="main-content">
+    <h2 class="page-title">Quản lý sinh viên</h2>
 
-        <input id="masv" name="masv" placeholder="Mã SV">
-        <input id="hoten" name="hoten" placeholder="Họ tên">
-        <input type="date" id="ngaysinh" name="ngaysinh">
+    <div class="card-form">
+        <form id="formsinhvien" onsubmit="add(); return false;">
+            <div class="input-row">
+                <input id="masv" name="masv" placeholder="Mã SV">
+                <input id="hoten" name="hoten" placeholder="Họ tên">
+                <input type="date" id="ngaysinh" name="ngaysinh">
+                <select id="gioitinh" name="gioitinh">
+                    <option value="">Giới tính</option>
+                    <option>Nam</option>
+                    <option>Nữ</option>
+                </select>
+            </div>
+            <div class="input-row">
+                <input id="email" name="email" placeholder="Email">
+                <input id="sodienthoai" name="sodienthoai" placeholder="SĐT">
+                <input id="diachi" name="diachi" placeholder="Địa chỉ">
+                <input id="malop" name="malop" placeholder="Mã lớp">
+                <input type="text" id="tenlop" name="tenlop" placeholder="Tên lớp">
+            </div>
+            <div class="input-row action-row">
+                <input type="file" id="anh" name="anh" class="file-input">
+                <button id="btn-submit" onclick="add()" class="btn-save">Thêm sinh viên</button>
+            </div>
+        </form>
+    </div>
 
-        <select id="gioitinh" name="gioitinh">
-            <option value="">Giới tính</option>
-            <option>Nam</option>
-            <option>Nữ</option>
-        </select>
+    <div class="search-section">
+        <h3><i class="fas fa-search"></i> Tìm kiếm nhanh</h3>
+        <div class="search-grid">
+            <input id="s_masv" placeholder="Mã SV">
+            <input id="s_hoten" placeholder="Họ tên">
+            <input id="s_malop" placeholder="Lớp">
+            <select id="s_gioitinh">
+                <option value="">Giới tính</option>
+                <option>Nam</option>
+                <option>Nữ</option>
+            </select>
+            <div class="date-range">
+                <span>Từ:</span> <input type="date" id="from">
+                <span>Đến:</span> <input type="date" id="to">
+            </div>
+            <button onclick="search()" class="btn-search">Tìm kiếm</button>
+        </div>
+    </div>
 
-        <input id="email" name="email" placeholder="Email">
-        <input id="sodienthoai" name="sodienthoai" placeholder="SĐT">
-        <input id="diachi" name="diachi" placeholder="Địa chỉ">
-        <input id="malop" name="malop" placeholder="Mã lớp">
-
-        <input type="file" id="anh" name="anh">
-
-        <button type="submit">Thêm</button>
-
-    </form>
-</div>
-
-<hr>
-
-<h3>Tìm kiếm</h3>
-
-<input id="s_masv" placeholder="Mã SV">
-<input id="s_hoten" placeholder="Họ tên">
-<input id="s_malop" placeholder="Lớp">
-
-<select id="s_gioitinh">
-    <option value="">Giới tính</option>
-    <option>Nam</option>
-    <option>Nữ</option>
-</select>
-
-<input type="date" id="from">
-<input type="date" id="to">
-
-<button onclick="search()">Tìm</button>
-
-<hr>
-
-<table>
-    <thead>
-        <tr>
-            <th>Mã SV</th>
-            <th>Họ tên</th>
-            <th>Lớp</th>
-            <th>Ảnh</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody id="table"></tbody>
-</table>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã SV</th>
+                    <th>Họ tên</th>
+                    <th>Mã Lớp</th>
+                    <th>Giới tính</th>
+                    <th> Tên lớp</th>
+                    <th>Ảnh</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="table">
+                </tbody>
+        </table>
+    </div>
+</main>
 
 <script src="../js/sinhVien.js"></script>
 

@@ -1,15 +1,25 @@
 <?php
 session_start();
-include "../php/config.php"; // Đảm bảo đường dẫn tới file config đúng
 
-// 1. Kiểm tra đăng nhập và lấy tên người dùng
-$ten_nguoi_dung = isset($_SESSION['hoten']) ? $_SESSION['hoten'] : 'Khách';
+if (!isset($_SESSION['hoten'])) {
+    header("Location: ../pages/dangnhap.html");
+    exit();
+}
 
-// 2. Truy vấn số lượng trực tiếp từ Database để hiển thị ngay khi load trang
-$count_sv = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM sinhvien"))['total'] ?? 0;
-$count_lh = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM lop"))['total'] ?? 0;
-$count_gv = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM giangvien"))['total'] ?? 0;
-$count_mh = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM monhoc"))['total'] ?? 0;
+include "../php/config.php";
+/** @var mysqli $conn */
+
+$ten_nguoi_dung = htmlspecialchars($_SESSION['hoten'], ENT_QUOTES, 'UTF-8');
+
+function queryCount($conn, $table) {
+    $result = mysqli_query($conn, "SELECT COUNT(*) as total FROM `$table`");
+    return $result ? (int)mysqli_fetch_assoc($result)['total'] : 0;
+}
+
+$count_sv = queryCount($conn, 'sinhvien');
+$count_lh = queryCount($conn, 'lop');
+$count_gv = queryCount($conn, 'giangvien');
+$count_mh = queryCount($conn, 'monhoc');
 ?>
 
 <!DOCTYPE html>
@@ -46,24 +56,31 @@ $count_mh = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FRO
         <h1>Hệ Thống Quản Lý Sinh Viên</h1>
         <nav class="navbar">
             <ul>
-                <li><a href="home.php" class="active">Trang chủ</a></li>
-                <li><a href="../pages/sinhVien.html">Sinh viên</a></li>
-                <li><a href="../pages/lopHoc.html">Lớp học</a></li>
-                <li><a href="../pages/monHoc.html">Môn học</a></li>
-                <li><a href="../pages/giangVien.html">Giảng viên</a></li>
-                <li><a href="../pages/thongKe.html">Thống kê</a></li>
-                <li><a href="../pages/diem.html">Bảng điểm</a></li>
+                 <li><a href="../php/home.php"><i class="fas fa-home"></i> Trang chủ</a></li>
+            <li><a href="../pages/sinhVien.html" class="active"><i class="fas fa-user-graduate"></i> Sinh viên</a></li>
+            <li><a href="../pages/lopHoc.html"><i class="fas fa-school"></i> Lớp học</a></li>
+            <li><a href="../pages/monHoc.html"><i class="fas fa-book"></i> Môn học</a></li>
+            <li><a href="../pages/giangVien.html"><i class="fas fa-chalkboard-teacher"></i> Giảng viên</a></li>
+            <li><a href="../pages/diem.html"><i class="fas fa-poll-h"></i> Bảng điểm</a></li>
+            <li><a href="../pages/baoCao.html"><i class="fas fa-file-alt"></i> Báo cáo</a></li>
+            <li><a href="../pages/thongKe.html"><i class="fas fa-chart-line"></i> Thống kê</a></li>
+            
                 
-                <?php if(isset($_SESSION['hoten'])): ?>
-                    <li class="user-item">
-                        <a href="#" title="Tài khoản: <?php echo $_SESSION['hoten']; ?>">
-                            <i class="fas fa-user"></i>
-                        </a>
-                    </li>
-                    <li><a href="logout.php">Đăng xuất</a></li>
-                <?php else: ?>
-                    <li><a href="../pages/dangnhap.html">Đăng nhập</a></li>
-                <?php endif; ?>
+              <?php if(isset($_SESSION['hoten'])): ?>
+    <li class="user-dropdown">
+        <a href="#" class="user-toggle">
+            <i class="fas fa-user-circle"></i>
+            <span><?php echo htmlspecialchars($_SESSION['hoten'], ENT_QUOTES, 'UTF-8'); ?></span>
+            <i class="fas fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="profile-giao-dien.php"><i class="fas fa-id-card"></i> Hồ sơ</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+        </ul>
+    </li>
+<?php else: ?>
+    <li><a href="../pages/dangnhap.html">Đăng nhập</a></li>
+<?php endif; ?>
             </ul>
         </nav>
     </div>
