@@ -14,12 +14,13 @@ $user_id = $_SESSION['user_id']; // Ví dụ: '74DCTT21457'
 $role = $_SESSION['role'];     // 'sinhvien' hoặc 'giangvien'
 
 // 2. Lấy dữ liệu theo đúng cấu trúc Database
+// 2. Lấy dữ liệu theo đúng cấu trúc Database
 if ($role == "sinhvien") {
-    // Sửa: namsinh -> ngaysinh, lop -> malop, id -> masv
+    // Kiểm tra lại bảng 'sinhvien' xem có cột 'ngaysinh' chưa, nếu chưa có cũng phải xóa đi
     $sql = "SELECT hoten, ngaysinh, malop, masv FROM sinhvien WHERE masv = '$user_id'";
 } else {
-    // Sửa: namsinh -> ngaysinh, chucvu -> chuyennganh, id -> magv
-    $sql = "SELECT hoten, ngaysinh, chuyennganh, magv FROM giangvien WHERE magv = '$user_id'";
+    // BỎ 'ngaysinh' vì database hiện tại của bạn không có cột này
+    $sql = "SELECT hoten, chuyennganh, magv FROM giangvien WHERE magv = '$user_id'";
 }
 
 $result = mysqli_query($conn, $sql);
@@ -63,17 +64,27 @@ if ($result && mysqli_num_rows($result) > 0) {
             <span class="info-value"><?php echo htmlspecialchars($data['hoten']); ?></span>
         </div>
 
-        <div class="info-item">
-            <i class="fas fa-calendar-day"></i>
-            <span class="info-label">Ngày sinh</span>
-            <span class="info-value"><?php echo date("d/m/Y", strtotime($data['ngaysinh'])); ?></span>
-        </div>
+      <div class="info-item">
+    <i class="fas fa-calendar-day"></i>
+    <span class="info-label">Ngày sinh</span>
+    <span class="info-value">
+        <?php echo isset($data['ngaysinh']) ? date("d/m/Y", strtotime($data['ngaysinh'])) : "Chưa cập nhật"; ?>
+    </span>
+</div>
 
-        <div class="info-item">
-            <i class="fas fa-birthday-cake"></i>
-            <span class="info-label">Tuổi</span>
-            <span class="info-value"><?php echo date("Y") - date("Y", strtotime($data['ngaysinh'])); ?> tuổi</span>
-        </div>
+<div class="info-item">
+    <i class="fas fa-birthday-cake"></i>
+    <span class="info-label">Tuổi</span>
+    <span class="info-value">
+        <?php 
+        if (isset($data['ngaysinh'])) {
+            echo date("Y") - date("Y", strtotime($data['ngaysinh'])) . " tuổi";
+        } else {
+            echo "N/A";
+        }
+        ?>
+    </span>
+</div>
 
         <?php if($role == "sinhvien"): ?>
             <div class="info-item">
