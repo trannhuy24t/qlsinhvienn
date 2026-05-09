@@ -7,192 +7,321 @@ const gk = document.getElementById("gk");
 const ck = document.getElementById("ck");
 
 const table = document.getElementById("table");
-const svGPA = document.getElementById("svGPA");
-const gpa = document.getElementById("gpa");
 
 const svTong = document.getElementById("svTong");
 const bangdiem = document.getElementById("bangdiem");
 const tongket = document.getElementById("tongket");
 
-// ===== LOAD SV CHO BẢNG ĐIỂM =====
-function loadSVTong(){
+// ===== ROLE =====
+const role = document.body.dataset.role || "";
+
+// ===== USER SAFE =====
+const currentUserId = document.body.dataset.masv || "";
+const currentHoten = document.body.dataset.hoten || "";
+
+// =====================================================
+// LOAD ALL (giống style lopHoc.js)
+// =====================================================
+function loadAll() {
+
+    if (role === "admin" || role === "giangvien") {
+
+        loadSV();
+        loadLHP();
+        loadDiem();
+        loadSVTong();
+    }
+
+    if (role === "sinhvien") {
+
+        loadSVTongSinhVien();
+        loadBangDiem();
+    }
+}
+
+// =====================================================
+// LOAD SINH VIÊN
+// =====================================================
+function loadSV() {
+
     fetch("../php/sinhVien.php")
-    .then(r=>r.json())
-    .then(data=>{
-        let html="";
-        data.forEach(s=>{
-            html+=`<option value="${s.masv}">${s.hoten}</option>`;
-        });
-        svTong.innerHTML = html;
-    });
+        .then(res => res.json())
+        .then(data => {
+
+            let html = "";
+
+            data.forEach(s => {
+
+                html += `
+                    <option value="${s.masv}">
+                        ${s.hoten}
+                    </option>
+                `;
+            });
+
+            if (sv) sv.innerHTML = html;
+        })
+        .catch(err => console.error("loadSV lỗi:", err));
 }
 
-// ===== LOAD BẢNG ĐIỂM =====
-function loadBangDiem(){
-    fetch("../php/diem.php?action=bangdiem&masv=" + svTong.value)
-    .then(r=>r.json())
-    .then(data=>{
-        let html="";
+// =====================================================
+// LOAD SV TỔNG
+// =====================================================
+// Tìm hàm loadSV() và loadSVTong(), sửa đường dẫn fetch:
 
-        data.monhoc.forEach(m=>{
-            html+=`
-            <tr>
-                <td>${m.tenmon}</td>
-                <td>${m.sotinchi}</td>
-                <td>${m.diemtong}</td>
-                <td>${m.xeploai}</td>
-            </tr>`;
-        });
-
-        bangdiem.innerHTML = html;
-
-        tongket.innerHTML = `
-            🎓 Tổng tín chỉ: <b>${data.tongtinchi}</b> |
-            GPA: <b>${data.gpa}</b> |
-            Học lực: <b>${data.hocluc}</b>
-        `;
-    });
-}
-// ===== LOAD ALL =====
-function loadAll(){
-    loadSV();
-    loadLHP();
-    loadSVTong();
-    loadDiem();
+function loadSV() {
+    // SỬA: Thay "../php/sinhVien.php" thành "../php/diem.php?action=get_students"
+    fetch("../php/diem.php?action=get_students") 
+        .then(res => res.json())
+        .then(data => {
+            let html = '<option value="">-- Chọn sinh viên --</option>'; // Nên thêm dòng mặc định
+            data.forEach(s => {
+                html += `<option value="${s.masv}">${s.masv} - ${s.hoten}</option>`;
+            });
+            if (sv) sv.innerHTML = html;
+        })
+        .catch(err => console.error("loadSV lỗi:", err));
 }
 
-// ===== LOAD SINH VIÊN =====
-function loadSV(){
-    fetch("../php/sinhVien.php")
-    .then(res => res.json())
-    .then(data => {
-        let html = "";
-        data.forEach(s => {
-            html += `<option value="${s.masv}">${s.hoten}</option>`;
-        });
-
-        // Đổ dữ liệu vào tất cả các ô Select sinh viên cùng lúc
-        if(sv) sv.innerHTML = html;
-        if(svGPA) svGPA.innerHTML = html;
-        if(svTong) svTong.innerHTML = html; 
-    })
+function loadSVTong() {
+    if (role === "sinhvien") {
+        loadSVTongSinhVien();
+        return;
+    }
+    // SỬA: Tương tự như trên
+    fetch("../php/diem.php?action=get_students")
+        .then(res => res.json())
+        .then(data => {
+            let html = '<option value="">-- Chọn sinh viên --</option>';
+            data.forEach(s => {
+                html += `<option value="${s.masv}">${s.masv} - ${s.hoten}</option>`;
+            });
+            if (svTong) svTong.innerHTML = html;
+        })
+        .catch(err => console.error("loadSVTong lỗi:", err));
 }
 
-// ===== LOAD LỚP HỌC PHẦN =====
-function loadLHP(){
-    fetch("../php/monhoc.php?action=listLHP")
-    .then(res => res.json())
-    .then(data => {
-        let html = "";
-        data.forEach(l => {
-            html += `<option value="${l.malhp}">${l.tenmon}</option>`;
-        });
-
-        lhp.innerHTML = html;
-    })
-    .catch(err => {
-        console.error("Lỗi loadLHP:", err);
-    });
+// =====================================================
+// LOAD LHP
+// =====================================================
+function loadLHP() {
+    // SỬA: Thay đường dẫn fetch để lấy danh sách lớp học phần từ diem.php
+    fetch("../php/diem.php?action=get_classes")
+        .then(res => res.json())
+        .then(data => {
+            let html = '<option value="">-- Chọn môn học --</option>';
+            data.forEach(l => {
+                html += `<option value="${l.malhp}">${l.malhp} - ${l.tenmon}</option>`;
+            });
+            if (lhp) lhp.innerHTML = html;
+        })
+        .catch(err => console.error("loadLHP lỗi:", err));
 }
 
-// ===== LƯU ĐIỂM =====
-function save(){
-    if(!sv.value || !lhp.value){
-        alert("Chọn sinh viên và lớp học phần!");
+// =====================================================
+// SAVE ĐIỂM
+// =====================================================
+function save() {
+
+    if (role === "sinhvien") {
+        alert("Không có quyền!");
+        return;
+    }
+
+    if (!sv || !lhp || !sv.value || !lhp.value) {
+        alert("Chọn sinh viên và lớp!");
         return;
     }
 
     let f = new FormData();
-    f.append("action","save");
+
+    f.append("action", "save");
     f.append("masv", sv.value);
     f.append("malhp", lhp.value);
-    f.append("diemchuyencan", cc.value || 0);
-    f.append("diemgiuaky", gk.value || 0);
-    f.append("diemcuoiky", ck.value || 0);
+    f.append("diemchuyencan", cc?.value || 0);
+    f.append("diemgiuaky", gk?.value || 0);
+    f.append("diemcuoiky", ck?.value || 0);
 
     fetch("../php/diem.php", {
-        method:"POST",
-        body:f
+        method: "POST",
+        body: f
     })
-    .then(res => res.json())
-    .then(d => {
-        if(d.status === "success"){
-            alert("Lưu điểm thành công!");
-            clearForm();
-            loadDiem();
-        } else {
-            alert("Lỗi lưu điểm!");
-            console.log(d);
+        .then(res => res.json())
+        .then(d => {
+
+            if (d.status === "success") {
+
+                alert("Lưu thành công!");
+                clearForm();
+                loadDiem();
+
+            } else {
+
+                alert(d.message || "Lỗi!");
+            }
+        })
+        .catch(err => console.error("save lỗi:", err));
+}
+
+// =====================================================
+// LOAD DANH SÁCH ĐIỂM
+// =====================================================
+function loadDiem() {
+
+    if (role === "sinhvien") {
+
+        if (table) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="8" style="text-align:center;">
+                        Sinh viên chỉ xem bảng tổng kết
+                    </td>
+                </tr>
+            `;
         }
-    })
-    .catch(err => {
-        console.error("Lỗi save:", err);
-        alert("Lỗi kết nối server!");
-    });
-}
+        return;
+    }
 
-// ===== LOAD ĐIỂM =====
-function loadDiem(){
     fetch("../php/diem.php?action=list")
-    .then(res => res.json())
-    .then(data => {
-        let html = "";
+        .then(res => res.json())
+        .then(data => {
 
-        data.forEach(d => {
-            html += `
-            <tr>
-                <td>${d.masv}</td>
-                <td>${d.hoten}</td>
-                <td>${d.tenmon}</td>
-                <td>${d.diemchuyencan}</td>
-                <td>${d.diemgiuaky}</td>
-                <td>${d.diemcuoiky}</td>
-                <td><b>${d.diemtong}</b></td>
-                <td>${d.xeploai}</td>
-            </tr>`;
-        });
+            let html = "";
 
-        table.innerHTML = html;
-    })
-    .catch(err => {
-        console.error("Lỗi loadDiem:", err);
-    });
+            data.forEach(d => {
+
+                html += `
+                <tr>
+                    <td>${d.masv}</td>
+                    <td>${d.hoten}</td>
+                    <td>${d.tenmon}</td>
+                    <td>${d.diemchuyencan}</td>
+                    <td>${d.diemgiuaky}</td>
+                    <td>${d.diemcuoiky}</td>
+                    <td><b>${d.diemtong}</b></td>
+                    <td>${d.xeploai}</td>
+                </tr>
+                `;
+            });
+
+            if (table) table.innerHTML = html;
+        })
+        .catch(err => console.error("loadDiem lỗi:", err));
 }
 
-// ===== GPA =====
-function tinhGPA(){
-    if(!svGPA.value){
-        alert("Chọn sinh viên!");
+// =====================================================
+// BẢNG ĐIỂM
+// =====================================================
+function loadBangDiem() {
+
+    let masv =
+        svTong?.value ||
+        currentUserId ||
+        "";
+
+    if (!masv) {
+
+        if (bangdiem) {
+
+            bangdiem.innerHTML = `
+                <tr><td colspan="4">Không có dữ liệu</td></tr>
+            `;
+        }
         return;
     }
 
-    fetch("../php/diem.php?action=gpa&masv=" + svGPA.value)
-    .then(res => res.json())
-    .then(d => {
-        gpa.innerText = "GPA: " + d.gpa;
-    })
-    .catch(err => {
-        console.error("Lỗi GPA:", err);
-    });
+    fetch("../php/diem.php?action=bangdiem&masv=" + masv)
+        .then(r => r.json())
+        .then(data => {
+
+            if (!data.monhoc) return;
+
+            let html = "";
+
+            data.monhoc.forEach(m => {
+
+                html += `
+                <tr>
+                    <td>${m.tenmon}</td>
+                    <td>${m.sotinchi}</td>
+                    <td>${m.diemtong}</td>
+                    <td>${m.xeploai}</td>
+                </tr>
+                `;
+            });
+
+            if (bangdiem) bangdiem.innerHTML = html;
+
+            if (tongket) {
+
+                tongket.innerHTML = `
+                    GPA: ${data.gpa} |
+                    Tín chỉ: ${data.tongtinchi} |
+                    Học lực: ${data.hocluc}
+                `;
+            }
+        })
+        .catch(err => console.error("loadBangDiem lỗi:", err));
 }
 
+// =====================================================
+// CLEAR FORM
+// =====================================================
+function clearForm() {
+
+    if (cc) cc.value = "";
+    if (gk) gk.value = "";
+    if (ck) ck.value = "";
+}
+
+// =====================================================
+// INIT (GIỐNG LOPHOC.JS)
+// =====================================================
+window.onload = function () {
+
+    if (role === "sinhvien") {
+
+        const formSection = document.querySelector(".grid-form");
+
+        if (formSection) {
+
+            const card = formSection.closest(".card");
+            if (card) card.style.display = "none";
+        }
+
+        const cards = document.querySelectorAll(".card");
+
+        if (cards.length > 1 && cards[1]) {
+            cards[1].style.display = "none";
+        }
+    }
+
+    loadAll();
+};
 // ===== XUẤT PDF =====
-function xuatPDF(){
-    // Đổi svGPA thành svTong để khớp với Select box trong phần Tổng kết
-    if(!svTong.value){
-        alert("Chọn sinh viên để xuất PDF!");
+// ===== XUẤT PDF (THEO USER) =====
+function xuatPDF() {
+
+    let userId = "";
+
+    // SINH VIÊN → luôn lấy user hiện tại
+    if (role === "sinhvien") {
+
+        userId = currentUserId;
+
+    } else {
+
+        // ADMIN / GIẢNG VIÊN → lấy từ dropdown nếu có
+        userId = svTong ? svTong.value : "";
+    }
+
+    if (!userId) {
+
+        alert("Không xác định được người dùng!");
         return;
     }
-    // Chuyển hướng đến file pdf.php
-    window.location.href = "../php/pdf.php?masv=" + svTong.value;
-}
 
-// ===== CLEAR FORM =====
-function clearForm(){
-    cc.value = "";
-    gk.value = "";
-    ck.value = "";
+    window.location.href =
+        "../php/pdf.php?user_id=" + userId;
 }
-
-// ===== LOAD KHI MỞ TRANG =====
-window.onload = loadAll;

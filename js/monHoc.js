@@ -2,42 +2,75 @@ function loadAll(){
     loadMon();
     loadHK();
     loadLHP();
+    loadLop();
 }
 
-// ===== MON =====
-function loadMon(){
+function loadMon() {
     fetch("../php/monHoc.php?action=listMon")
-    .then(r=>r.json())
-    .then(data=>{
-        let html="", select="";
-        data.forEach(m=>{
-            html+=`
+    .then(r => r.json())
+    .then(data => {
+        let html = "", select = "";
+        data.forEach(m => {
+            html += `
             <tr>
                 <td>${m.mamon}</td>
                 <td>${m.tenmon}</td>
                 <td>${m.sotinchi}</td>
                 <td>${m.mota}</td>
                 <td>
-                    <button onclick="deleteMon('${m.mamon}')">Xóa</button>
+                    <button onclick="deleteMon('${m.mamon}')" style="color:red">Xóa</button>
                 </td>
             </tr>`;
-            select+=`<option value="${m.mamon}">${m.tenmon}</option>`;
+            select += `<option value="${m.mamon}">${m.tenmon}</option>`;
         });
-        monTable.innerHTML=html;
-        mamonSelect.innerHTML=select;
+        
+        // Kiểm tra phần tử trước khi gán innerHTML
+        if(document.getElementById('monTable')) {
+            document.getElementById('monTable').innerHTML = html;
+        }
+        if(document.getElementById('mamonSelect')) {
+            document.getElementById('mamonSelect').innerHTML = select;
+        }
     });
 }
 
-function addMon(){
-    let f=new FormData();
-    f.append("action","addMon");
-    f.append("mamon",mamon.value);
-    f.append("tenmon",tenmon.value);
-    f.append("sotinchi",sotinchi.value);
-    f.append("mota",mota.value);
+function addMon() {
+    // Kiểm tra dữ liệu đầu vào cơ bản
+    if (!mamon.value || !tenmon.value) {
+        alert("Vui lòng nhập đầy đủ mã và tên môn học!");
+        return;
+    }
 
-    fetch("../php/monHoc.php",{method:"POST",body:f})
-    .then(()=>loadMon());
+    let f = new FormData();
+    f.append("action", "addMon");
+    f.append("mamon", mamon.value);
+    f.append("tenmon", tenmon.value);
+    f.append("sotinchi", sotinchi.value);
+    f.append("mota", mota.value);
+
+    fetch("../php/monHoc.php", { 
+        method: "POST", 
+        body: f 
+    })
+    .then(r => r.text()) // Nhận phản hồi văn bản từ PHP để kiểm tra lỗi nếu có
+    .then(data => {
+        console.log("Kết quả:", data);
+        
+        // Gọi lại hàm load danh sách để cập nhật bảng và select box
+        loadMon(); 
+
+        // Xóa trắng các ô nhập liệu sau khi thêm thành công
+        mamon.value = "";
+        tenmon.value = "";
+        sotinchi.value = "";
+        mota.value = "";
+        
+        alert("Thêm môn học thành công!");
+    })
+    .catch(err => {
+        console.error("Lỗi:", err);
+        alert("Có lỗi xảy ra khi thêm môn học.");
+    });
 }
 
 function deleteMon(id){
@@ -94,37 +127,81 @@ function addHK() {
 // ===== LHP =====
 function loadLHP(){
     fetch("../php/monHoc.php?action=listLHP")
-    .then(r=>r.json())
-    .then(data=>{
-        let html="";
-        data.forEach(l=>{
-            html+=`
+    .then(r => r.json())
+    .then(data => {
+        let html = "";
+        data.forEach(l => {
+            html += `
             <tr>
                 <td>${l.malhp}</td>
                 <td>${l.tenmon}</td>
                 <td>${l.magv}</td>
                 <td>${l.tenhocky}</td>
                 <td>${l.namhoc}</td>
+                <td><span class="badge-lop">${l.tenlop}</span></td> <!-- Thêm cột tên lớp -->
                 <td>
-                    <button class="btn-edit" onclick="editLHP('${l.malhp}')">Sửa</button>
-                    <button class="btn-delete" onclick="deleteLHP('${l.malhp}')">Xóa</button>
+                    <button class="btn-edit" 
+                        onclick="editLHP('${l.malhp}', '${l.mamon}', '${l.magv}', '${l.mahocky}', '${l.malop}')">Sửa</button>
+                    <button class="btn-delete" 
+                        onclick="deleteLHP('${l.malhp}')">Xóa</button>
                 </td>
             </tr>`;
         });
-        if(document.getElementById("lhpTable")) lhpTable.innerHTML = html;
+        if(document.getElementById("lhpTable")) {
+            document.getElementById("lhpTable").innerHTML = html;
+        }
     });
 }
 
 function addLHP(){
-    let f=new FormData();
-    f.append("action","addLHP");
-    f.append("malhp",malhp.value);
-    f.append("mamon",mamonSelect.value);
-    f.append("magv",magv.value);
-    f.append("mahocky",hkSelect.value);
+    // 1. Kiểm tra ID của select lớp là 'lopSelect'
+    const lopElement = document.getElementById("lopSelect");
+    
+    if (!malhp.value || !mamonSelect.value || !magv.value || !hkSelect.value || !lopElement.value) {
+        alert("Vui lòng nhập đầy đủ thông tin lớp học phần!");
+        return;
+    }
 
-    fetch("../php/monHoc.php",{method:"POST",body:f})
-    .then(()=>loadLHP());
+    let f = new FormData();
+    f.append("action", "addLHP");
+    f.append("malhp", document.getElementById("malhp").value);
+    f.append("mamon", document.getElementById("mamonSelect").value);
+    f.append("magv", document.getElementById("magv").value);
+    f.append("mahocky", document.getElementById("hkSelect").value);
+    f.append("malop", lopElement.value); // Gửi giá trị malop lên server
+
+    fetch("../php/monHoc.php", { method: "POST", body: f })
+    .then(r => r.json())
+    .then(data => {
+        if (data.status === "success") {
+            alert("Thêm lớp học phần thành công!");
+            loadLHP(); 
+            document.getElementById("formLHP").reset();
+        } else {
+            alert("Lỗi: " + data.message);
+        }
+    })
+    .catch(err => console.error("Lỗi:", err));
+}
+
+// Tương tự cho hàm editLHP để đổ lại dữ liệu lên form
+function editLHP(ma, mamon, magv, mahk, malop) {
+    document.getElementById("malhp").value = ma;
+    document.getElementById("malhp").readOnly = true;
+    document.getElementById("mamonSelect").value = mamon;
+    document.getElementById("magv").value = magv;
+    document.getElementById("hkSelect").value = mahk;
+    
+    // Đổ dữ liệu lớp vào select
+    if(document.getElementById("malopSelect")) {
+        document.getElementById("malopSelect").value = malop;
+    }
+
+    const btn = document.querySelector("#formLHP button");
+    if(btn) {
+        btn.innerText = "Cập nhật lớp";
+        document.getElementById("formLHP").onsubmit = function() { updateLHP(); return false; };
+    }
 }
 // --- PHẦN MÔN HỌC ---
 // Ví dụ cho bảng môn học
@@ -300,21 +377,9 @@ function deleteLHP(id) {
     }
 }
 
-// Hàm đổ dữ liệu lên Form để Sửa
-function editLHP(ma, mamon, magv, mahk) {
-    document.getElementById("malhp").value = ma;
-    document.getElementById("malhp").readOnly = true; // Không cho sửa mã LHP
-    document.getElementById("mamonSelect").value = mamon;
-    document.getElementById("magv").value = magv;
-    document.getElementById("hkSelect").value = mahk;
+// Đổ dữ liệu lên form để chuẩn bị sửa
 
-    // Đổi nút bấm thành Cập nhật
-    const btn = document.querySelector("#formLHP button");
-    btn.innerText = "Cập nhật lớp";
-    btn.onclick = updateLHP;
-}
-
-// Hàm gửi yêu cầu cập nhật
+// Gửi yêu cầu cập nhật về server
 function updateLHP() {
     let f = new FormData();
     f.append("action", "updateLHP");
@@ -322,15 +387,35 @@ function updateLHP() {
     f.append("mamon", document.getElementById("mamonSelect").value);
     f.append("magv", document.getElementById("magv").value);
     f.append("mahocky", document.getElementById("hkSelect").value);
+    f.append("malop", document.getElementById("lopSelect").value); // Đảm bảo lấy đúng ID này
 
     fetch("../php/monHoc.php", { method: "POST", body: f })
     .then(r => r.json())
     .then(data => {
-        if(data.status === "success") {
+        if (data.status === "success") {
             alert("Cập nhật thành công!");
-            location.reload(); // Reset lại trạng thái form và bảng
+            document.getElementById("malhp").readOnly = false;
+            document.getElementById("formLHP").reset();
+            loadLHP();
         }
     });
 }
-
+function loadLop() {
+    fetch("../php/monHoc.php?action=listLop")
+    .then(r => r.json())
+    .then(data => {
+        let select = '<option value="">-- Chọn lớp --</option>';
+        data.forEach(l => {
+            // Sử dụng malop làm value và tenlop làm text hiển thị
+            select += `<option value="${l.malop}">${l.tenlop}</option>`;
+        });
+        
+        // Sửa ID ở đây thành "lopSelect" để khớp với HTML
+        const selectElement = document.getElementById('lopSelect');
+        if(selectElement) {
+            selectElement.innerHTML = select;
+        }
+    })
+    .catch(err => console.error("Lỗi load lớp:", err));
+}
 window.onload=loadAll;
